@@ -41,18 +41,7 @@ console.log(FilterCar);
    
           <div className='flex flex-wrap  gap-4 justify-center'>
 
-          {/* image: '/Assets/Images/_CJWghhfJsWYs47ERRJHfV3BR58.jpg',
-    name: 'BMW1',
-    redirection: '#',
-    dealerName: 'carHub',
-    Currency: '$',
-    price : '139,000',
-    millege: '29,200 mi',
-    location: 'Los Angeles, CA',
-    postDate: '12 days ago',
-    shortDesc: 'I bought this car August 2020 from Livermore Porsche. At the time, it had about 2200 miles',
-    alt: 'img1',
-  }, */}
+    
             {
               cars.map((item,index)=>{
                 return(
@@ -83,14 +72,7 @@ console.log(FilterCar);
           </div>
 
   
-    {/* // <div>
-    //   <h1>Car List</h1>
-    //   <p>Make: {carData.make}</p>
-    //   <p>Model: {carData.model}</p>
-    //   <p>Zip: {carData.zip}</p>
-    //   <p>Distance: {carData.distance}</p>
-    //   <p>Car Type: {carData.carType}</p>
-    // </div> */}
+   
     </div>
   );
 };

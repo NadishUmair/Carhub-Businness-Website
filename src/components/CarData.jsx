@@ -78,7 +78,8 @@ const sliderImg = [
     alt: 'img1',
     zippostal:"234",
     distance:'200',
-    model:"2017"
+    model:"2017",
+    cartype:"used"
   },
   {
     key: 2,
@@ -95,7 +96,8 @@ const sliderImg = [
     alt: 'img2',
     zippostal:"231",
     distance:'300',
-    model:"2018"
+    model:"2018",
+    cartype:"new"
   },
   {
     key: 3,
@@ -112,7 +114,8 @@ const sliderImg = [
     alt: 'img3',
     zippostal:"235",
     distance:'400',
-    model:"2020"
+    model:"2020",
+    cartype:"new"
   },
   {
     key: 4,
@@ -129,7 +132,8 @@ const sliderImg = [
     alt: 'img4',
     zippostal:"234",
     distance:'200',
-    model:"2017"
+    model:"2017",
+    cartype:"used"
   },
   {
     key: 6,
@@ -146,7 +150,8 @@ const sliderImg = [
     alt: 'img5',
     zippostal:"231",
     distance:'300',
-    model:"2018"
+    model:"2018",
+    cartype:"new"
   },
   {
     key: 7,
@@ -163,7 +168,8 @@ const sliderImg = [
     alt: 'img1',
     zippostal:"235",
     distance:'300',
-    model:"2019"
+    model:"2019",
+    cartype:"used"
   },
   {
     key: 8,
@@ -180,7 +186,8 @@ const sliderImg = [
     alt: 'img2',
     zippostal:"235",
     distance:'400',
-    model:"2019"
+    model:"2019",
+    cartype:"new"
   },
   {
     key: 9,
@@ -197,7 +204,8 @@ const sliderImg = [
     alt: 'img3',
     zippostal:"236",
     distance:'500',
-    model:"2019"
+    model:"2019",
+    cartype:"new"
   },
   {
     key: 10,
@@ -214,7 +222,8 @@ const sliderImg = [
     alt: 'img4',
     zippostal:"236",
     distance:'400',
-    model:"2020"
+    model:"2020",
+    cartype:"used"
   },
   // {
   //   key: 11,
