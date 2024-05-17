@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from "react-hook-form";
-export default function FilterForm({onFilterSubmit}) {
+export default function RefineBySearchForm({onFilterSubmit}) {
  
     const {
         register,
@@ -10,14 +10,16 @@ export default function FilterForm({onFilterSubmit}) {
     const onSubmit = (data) => {
       onFilterSubmit(data);
       };
+      const resetRefinebySearch=(()=>{
+         localStorage.removeItem("RefineBySearchData")
+      })
   return (
     <div>
-             <div>
-                  Refine Search By Delear
-              </div>
+            
               <div>
-                   <div>Refine Filter</div>
-                   <div className="p-4">
+                 
+                
+                  <div className="">
                     <form action="" onSubmit={handleSubmit(onSubmit)}>
                       <div className="flex flex-col">
                         <label htmlFor="">Make</label>
@@ -54,8 +56,8 @@ export default function FilterForm({onFilterSubmit}) {
                        touring is required
                       </span>
                     )}
-                      <div className="flex justify-between">
-                        <div className="flex flex-col w-[40%]">
+                      <div className=" ">
+                        <div className="flex flex-col ">
                           <label htmlFor="">Zip/Postal</label>
                           <input type="text" name='zippostal' className="border p-2" {...register("zippostal", { required: true })}  />
                         </div>{errors.zippostal && (
@@ -63,7 +65,7 @@ export default function FilterForm({onFilterSubmit}) {
                         Zip/Postal is required
                       </span>
                     )}
-                        <div className="w-[40%]">
+                        <div className="">
                           <label htmlFor="">Distance</label>
                           <select className="w-full border p-2" name='distance'  {...register("distance", { required: true })}>
                             <option value="" defaultValue >Select</option>
@@ -76,8 +78,8 @@ export default function FilterForm({onFilterSubmit}) {
                       </span>
                     )}
                       </div>
-                      <div className="flex justify-between">
-                        <div className="flex flex-col w-[40%]">
+                      <div className=" ">
+                        <div className="flex flex-col ">
                           <label htmlFor="">Min Price</label>
                           <input type="text" name='minprice' className="border p-2"  {...register("minprice", { required: true })}/>
                         </div>
@@ -86,7 +88,7 @@ export default function FilterForm({onFilterSubmit}) {
                        Min Price is required
                       </span>
                     )}
-                        <div className="w-[40%] flex flex-col">
+                        <div className=" flex flex-col">
                           <label htmlFor="">Max Price</label>
                           <input type="text" name='maxprice' className="border p-2 "  {...register("maxprice", { required: true })} />
                         </div>
@@ -96,8 +98,8 @@ export default function FilterForm({onFilterSubmit}) {
                       </span>
                     )}
                       </div>
-                      <div className="flex justify-between">
-                        <div className="flex flex-col w-[40%]">
+                      <div className=" ">
+                        <div className="flex flex-col ">
                           <label htmlFor="">Min Year</label>
                           <input type="text" name='minyear' className="border p-2"  {...register("minyear", { required: true })}/>
                         </div>
@@ -106,7 +108,7 @@ export default function FilterForm({onFilterSubmit}) {
                       Min Year is required
                       </span>
                     )}
-                        <div className="w-[40%] flex flex-col">
+                        <div className=" flex flex-col">
                           <label htmlFor="">Max Year</label>
                           <input type="text" name='maxyear'  {...register("maxyear", { required: true })} className="border p-2 " />
                         </div>
@@ -116,8 +118,8 @@ export default function FilterForm({onFilterSubmit}) {
                       </span>
                     )}
                       </div>
-                      <div className="flex justify-between">
-                        <div className="flex flex-col w-[40%]">
+                      <div className=" ">
+                        <div className="flex flex-col ">
                           <label htmlFor="">Min Millage</label>
                           <input type="text" name='minmillage' {...register("minmillage", { required: true })}  className="border p-2" />
                         </div>
@@ -126,7 +128,7 @@ export default function FilterForm({onFilterSubmit}) {
                         Minmillage is required
                       </span>
                     )}
-                        <div className="w-[40%] flex flex-col">
+                        <div className=" flex flex-col">
                           <label htmlFor="">Max Millage</label>
                           <input type="text" name='maxmillage' className="border p-2 " {...register("maxmillage", { required: true })} />
                         </div>
@@ -268,7 +270,7 @@ export default function FilterForm({onFilterSubmit}) {
                     )}
                 <div className='flex flex-col'>
                     <label htmlFor="">Keywords</label>
-                    <input type="text" name='keywords'  {...register("keywords", { required: true })} />
+                    <input type="text" className='border p-2' name='keywords'  {...register("keywords", { required: true })} />
                 </div>
                 {errors.keywords && (
                       <span className="text-red-500">
@@ -277,7 +279,7 @@ export default function FilterForm({onFilterSubmit}) {
                     )}
                 <div className="flex flex-col">
     <label htmlFor="">Show Last # of Days</label>
-       <select name="" id="">
+       <select name="" id="" className='border p-2'>
         <option value="">1</option>
         <option value="">2</option>
         <option value="">3</option>
@@ -289,16 +291,17 @@ export default function FilterForm({onFilterSubmit}) {
                         Zip/Postal is required
                       </span>
                     )}
-              <div className='flex justify-between px-8'>
-                <div className='bg-red-400 w-[40%] text-white font-bold text-center' >
-                  <button>Reset</button>
+              <div className='flex   justify-between mt-4'>
+                <div className='bg-red-500 px-2 py-1 rounded-lg w-[43%] text-white font-bold text-center' onClick={resetRefinebySearch}>
+                 Reset
                 </div>
-                <div className='bg-orange-300 w-[40%] text-white font-bold text-center' >
-                    <button type='submit'>Submitt</button>
+                <div className='bg-orange-500 px-2 py-1 rounded-lg w-[43%] text-white font-bold text-center ' >
+                    <button type='submit '>Submitt</button>
                 </div>
               </div>
                     </form>
                    </div>
+                   
               </div>
               <div>
                      <div>New Car</div>

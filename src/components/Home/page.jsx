@@ -14,7 +14,7 @@ export function HomePage() {
 
     {/* Transparent Navbar */}
     <div className="fixed top-0 left-0 w-full z-50 bg-transparent">
-      <Navbar />
+      <Navbar style={{color:"white"}} />
     </div>
        <CarSlide/>
        <ExploreCar/>

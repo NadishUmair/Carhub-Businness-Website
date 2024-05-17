@@ -3,13 +3,25 @@
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FilterCar } from "@/components/CarData";
-import FilterForm from "@/components/FilterForms/page";
+import RefineBySearchForm from "@/components/FilterBySearchForm/page";
+import NewCarForm from "@/components/RefinebyCar/page";
+import Navbar from "@/components/Navbar/page";
 
 const CarList = () => {
   const searchParams = useSearchParams();
   const [carData, setCarData] = useState(null);
   const [cars, setCars] = useState([]);
+  const [handleRefinshow,sethandleRefineshow]=useState(false);
+  const [showCarForm,setShowCarForm]=useState(false);
 
+  const refinshowHanlder=()=>{
+    sethandleRefineshow(!handleRefinshow);
+    if (showCarForm) setShowCarForm(false);
+  }
+  const handleShowCarForm=()=>{
+    setShowCarForm(!showCarForm);
+    if (handleRefinshow) sethandleRefineshow(false);
+  }
   useEffect(() => {
     const data = {
       make: searchParams.get("make"),
@@ -36,6 +48,9 @@ const CarList = () => {
   }, [searchParams]);
   const handleFilterSubmit = (data) => {
     console.log(data);
+   localStorage.setItem("RefineBySearchData",JSON.stringify(data));
+   console.log(localStorage);
+    
     const refineFiltered = FilterCar.filter((car) => {
       return (
         (data.make && car.make === data.make) ||
@@ -49,19 +64,46 @@ const CarList = () => {
     });
     setCars(refineFiltered);
   };
+
+  const handlecarfilter=(data)=>{
+    const filterBycar=FilterCar.filter((car)=>{
+      return(
+        (data.make && car.make === data.make) ||
+        (data.model && car.model === data.model) ||
+        (data.zip && car.zippostal === data.zip) 
+      );
+    })
+    setCars(filterBycar);
+    console.log(data);
+  }
   if (!carData) return <div>Loading...</div>;
-  console.log(FilterCar);
+  
   return (
     <>
-    
+        <div >
+          <Navbar style={{color:"black"}}/>
+        </div>
       <div className="h-[50vh] flex flex-col justify-center items-center">
         <div>
           <h1 className="text-center"> Car Hub</h1>
         </div>
       </div>
        <div className="md:flex">
-            <div className="md:w-[20%]">
-              <FilterForm onFilterSubmit={handleFilterSubmit}/>
+            <div className="md:w-[20%] p-4">
+            <div className='text-center bg-red-500 p-2 text-white font-bold cursor-pointer hover:bg-red-400'
+                   onClick={refinshowHanlder}
+                   >Refine Filter</div>
+              { handleRefinshow &&
+                <RefineBySearchForm onFilterSubmit={handleFilterSubmit}/>
+              }
+              <div className='mt-4 text-center bg-red-500 p-2 text-white font-bold cursor-pointer hover:bg-red-400'
+                   onClick={handleShowCarForm}
+                   >New car</div>
+                   {
+                    showCarForm && 
+                    <NewCarForm onFilterCar={handlecarfilter} />
+
+                   }
             </div>
       <div className="md:w-[80%] flex flex-wrap  gap-4 justify-center">
         {cars.map((item, index) => {
