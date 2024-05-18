@@ -200,12 +200,17 @@ const CarList = () => {
                         : "flex items-center "
                     }  `}
                   >
-                    <div className={`${listgridView ? "" : "w-[50%]"}`}>
+                    <div className={`${listgridView ? "" : "w-[50%]"} relative`}>
                       <img
                         className="h-full w-full"
                         src={item.image}
                         alt="Sunset in the mountains"
                       />
+                      <div className="absolute top-0 right-0 ">
+                    <span className="inline-block rounded-lg bg-red-500 px-3 py-1 text-lg text-white ">
+                          {item.dealerName}
+                    </span>
+                      </div>
                     </div>
                     <div className={`${listgridView ? "" : "w-[50%]"}`}>
                       <div className="px-2 ">
@@ -217,27 +222,28 @@ const CarList = () => {
                         </p>
                       </div>
                       <div className="px-2 pt-4 pb-1">
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                          Dealer Name:{item.dealerName}
-                        </span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                          Millege:{item.millege}
-                        </span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-green-600 mr-2 mb-2 ">
-                          Price:{item.price}
-                        </span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                          Location:{item.location}
-                        </span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                          PostDate:{item.postDate}
-                        </span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                          Zip/Postal:{item.zippostal}
-                        </span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                          Model:{item.model}
-                        </span>
+
+<div>
+<span className="inline-block bg-yellow-100 rounded-full px-3 py-1 text-sm text-yellow-800 mr-2 mb-2">
+  <span className="font-bold">Millege:</span> {item.millege}
+</span>
+<span className="inline-block bg-green-100 rounded-full px-3 py-1 text-sm text-green-800 mr-2 mb-2">
+  <span className="font-bold">Price:</span> {item.price}
+</span>
+</div>
+<span className="inline-block bg-purple-100 rounded-full px-3 py-1 text-sm text-purple-800 mr-2 mb-2">
+  <span className="font-bold">Location:</span> {item.location}
+</span>
+<span className="inline-block bg-red-100 rounded-full px-3 py-1 text-sm text-red-800 mr-2 mb-2">
+  <span className="font-bold">PostDate:</span> {item.postDate}
+</span>
+<span className="inline-block bg-gray-100 rounded-full px-3 py-1 text-sm text-gray-800 mr-2 mb-2">
+  <span className="font-bold">Zip/Postal:</span> {item.zippostal}
+</span>
+<span className="inline-block bg-teal-100 rounded-full px-3 py-1 text-sm text-teal-800 mr-2 mb-2">
+  <span className="font-bold">Model:</span> {item.model}
+</span>
+
                       </div>
                     </div>
                   </div>
