@@ -1,4 +1,4 @@
-"use client"; // Ensure this is at the very top of the file
+"use client"; 
 
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState, Suspense } from "react";
