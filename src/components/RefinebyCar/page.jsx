@@ -10,7 +10,7 @@ export default function NewCarForm({onFilterCar}) {
   };
 
   return (
-    <div>
+    <div className='bg-white p-2'>
 
       
       <form onSubmit={handleSubmit(onSubmit)}>

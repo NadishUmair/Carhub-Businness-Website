@@ -3,7 +3,7 @@ import { FilterCar } from '../CarData'
 export default function Filterbydealer ({onFilterDealer}) {
   return (
     <div>
-        <div className='flex flex-wrap justify-center gap-4 mt-4'>
+        <div className='flex flex-wrap justify-center gap-4 mt-4 bg-white p-2'>
             {
                 FilterCar.map((item,index)=>{
                     return(

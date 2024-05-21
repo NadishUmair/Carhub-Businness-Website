@@ -9,7 +9,7 @@ import Navbar from "@/components/Navbar/page";
 import Filterbydealer from "@/components/RefineByDealer/page";
 import { BsGrid3X3Gap } from "react-icons/bs";
 import { CiGrid2H } from "react-icons/ci";
-
+import { TiStar } from "react-icons/ti";
 const CarList = () => {
   const [listgridView, setlistgridView] = useState(true);
   const searchParams = useSearchParams();
@@ -112,7 +112,10 @@ const CarList = () => {
 
   return (
     <>
-      <div>
+    <div className="relative">
+
+
+      <div className="">
         <Navbar style={{ color: "black" }} />
       </div>
       <div className="h-[50vh] flex flex-col justify-center items-center bg-slate-200">
@@ -123,7 +126,7 @@ const CarList = () => {
         </div>
       </div>
       <div className="md:flex p-2">
-        <div className="md:w-[25%] p-4 h-[50%] bg-gray-300">
+        <div className="md:w-[25%] p-4 h-[50%]  border bg-gray-300 hidden md:block">
           <div
             className="text-center bg-gray-100 p-2 font-bold cursor-pointer hover:bg-gray-50"
             onClick={showDealerForm}
@@ -131,7 +134,7 @@ const CarList = () => {
             Search By Dealer
           </div>
           {searchDealer && (
-            <Filterbydealer onFilterDealer={searchDealerHandler} />
+            <Filterbydealer onFilterDealer={searchDealerHandler} className="bg-white" />
           )}
           <div
             className="mt-8 text-center bg-gray-100 p-2 font-bold cursor-pointer hover:bg-gary-50"
@@ -206,7 +209,7 @@ const CarList = () => {
                         : "flex items-center "
                     }  `}
                   >
-                    <div className={`${listgridView ? "" : "w-[50%]"} relative`}>
+                    <div className={`${listgridView ? "]" : "w-[50%]"} h-[40%] relative`}>
                       <img
                         className="h-full w-full"
                         src={item.image}
@@ -223,31 +226,39 @@ const CarList = () => {
                         <div className="font-bold text-xl mb-2">
                           {item.name}
                         </div>
+                        <div>
+                           <div className="flex text-yellow-400 text-xl">
+                           <TiStar /><TiStar /><TiStar /><TiStar /><TiStar />
+                           <p className="text-black text-sm">(5 Reviews)</p>
+                           </div>
+                        </div>
                         <p className="text-gray-700 text-base">
                           {item.shortDesc}
                         </p>
                       </div>
                       <div className="px-2 pt-4 pb-1">
-                        <div>
-                          <span className="inline-block bg-yellow-100 rounded-full px-3 py-1 text-sm text-yellow-800 mr-2 mb-2">
-                            <span className="font-bold">Mileage:</span> {item.millege}
+                        <div className="flex">
+                          <span className=" rounded-full px-3 py-1 text-[0.8rem] mr-2 mb-2">
+                            <span className="font-bold"></span> {item.millege}
                           </span>
-                          <span className="inline-block bg-green-100 rounded-full px-3 py-1 text-sm text-green-800 mr-2 mb-2">
-                            <span className="font-bold">Price:</span> {item.price}
-                          </span>
+                          <span className=" rounded-full px-3 py-1  text-[0.8rem] mr-2 mb-2">
+                          <span className="font-bold"></span> {item.location}
+                        </span>
+                          <span className=" rounded-full px-3 py-1   text-[0.8rem] mr-2 mb-2">
+                          <span className="font-bold"></span> {item.postDate}
+                        </span>
+                      
+                       
                         </div>
-                        <span className="inline-block bg-purple-100 rounded-full px-3 py-1 text-sm text-purple-800 mr-2 mb-2">
-                          <span className="font-bold">Location:</span> {item.location}
-                        </span>
-                        <span className="inline-block bg-red-100 rounded-full px-3 py-1 text-sm text-red-800 mr-2 mb-2">
-                          <span className="font-bold">Post Date:</span> {item.postDate}
-                        </span>
-                        <span className="inline-block bg-gray-100 rounded-full px-3 py-1 text-sm text-gray-800 mr-2 mb-2">
-                          <span className="font-bold">Zip/Postal:</span> {item.zippostal}
-                        </span>
-                        <span className="inline-block bg-teal-100 rounded-full px-3 py-1 text-sm text-teal-800 mr-2 mb-2">
-                          <span className="font-bold">Model:</span> {item.model}
-                        </span>
+                       
+                       <div className="flex justify-between">
+                       <span className="inline-block rounded-full px-3 py-1 text-sm font-bold mr-2 mb-2">
+                            <span className="font-bold">$</span> {item.price}
+                          </span>
+                          <span className="text-red-500">
+                            Share
+                          </span>
+                       </div>
                       </div>
                     </div>
                   </div>
@@ -256,6 +267,13 @@ const CarList = () => {
             })}
           </div>
         </div>
+        </div>
+        <div className="md:hidden fixed top-[90%] flex justify-between w-screen px-4">
+          <div className="p-2 rounded-sm bg-white shadow-xl text-gray-900">DEALERS</div>
+          <div className="p-2 rounded-sm bg-white shadow-xl text-gray-900">REFINE</div>
+          <div className="p-2 rounded-sm bg-white shadow-xl text-gray-900">NEW</div>
+      
+      </div>
       </div>
     </>
   );
@@ -264,7 +282,10 @@ const CarList = () => {
 const CarListPage = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <CarList />
+
+        <CarList />
+      
+
     </Suspense>
   );
 };

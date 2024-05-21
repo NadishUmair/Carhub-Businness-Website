@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useForm } from "react-hook-form";
 import { FilterCar } from '../CarData';
+import './filterbysearch.css'
 export default function RefineBySearchForm({onFilterSubmit}) {
  
     const {
@@ -17,14 +18,14 @@ export default function RefineBySearchForm({onFilterSubmit}) {
   return (
     <div>
             
-              <div>
+              <div className='bg-white p-2'>
                  
                 
                   <div className="">
                     <form action="" onSubmit={handleSubmit(onSubmit)}>
                       <div className="flex flex-col">
                         <label htmlFor="">Make</label>
-                        <select name="make" id="make" className="border p-2" {...register("make", { required: true })}>
+                        <select name="make" id="make" className="border p-2" {...register("make")}>
                           <option value="" defaultValue >Select</option>
                           <option value="make2">Make</option>
                         </select>
@@ -36,7 +37,7 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                     )}
                       <div className="flex flex-col">
                         <label htmlFor="">Model</label>
-                        <select name="model" id="" {...register("model", { required: true })} className="border p-2">
+                        <select name="model" id="" {...register("model")} className="border p-2">
                           <option value="" defaultValue >Select</option>
                           
                           <option value="2017">Mode 2017</option>
@@ -51,48 +52,53 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                     )}
                       <div className="flex flex-col">
                         <label htmlFor="">Touring</label>
-                        <input type="text" name='touring' className="border p-2" {...register("touring", { required: true })} />
+                        <input type="text" name='touring' className="border p-2" {...register("touring")} />
                       </div>
                       {errors.touring && (
                       <span className="text-red-500">
                        touring is required
                       </span>
                     )}
-                      <div className=" ">
-                        <div className="flex flex-col ">
+                      <div className=" flex justify-between  ">
+                        <div className="flex flex-col w-[40%]">
                           <label htmlFor="">Zip/Postal</label>
-                          <input type="text" name='zippostal' className="border p-2" {...register("zippostal", { required: true })}  />
-                        </div>{errors.zippostal && (
-                      <span className="text-red-500">
+                          <input type="text" name='zippostal' placeholder='Ex. 90210' className="border p-2" {...register("zippostal", { required: true })}  />
+                        <div>{errors.zippostal && (
+                      <span className="text-red-500 text-[0.7rem]">
                         Zip/Postal is required
                       </span>
-                    )}
-                        <div className="">
+                    )}</div>
+                        </div>
+
+                        <div className="w-[40%]">
                           <label htmlFor="">Distance</label>
                           <select className="w-full border p-2" name='distance'  {...register("distance", { required: true })}>
                             <option value="" defaultValue >Select</option>
                             <option value="300">300km</option>
                           </select>
-                        </div>
-                        {errors.distance && (
-                      <span className="text-red-500">
+                          <div>
+                          {errors.distance && (
+                      <span className="text-red-500 text-[0.7rem]">
                         Distance is required
                       </span>
                     )}
+                          </div>
+                        </div>
+                    
                       </div>
-                      <div className=" ">
-                        <div className="flex flex-col ">
+                      <div className="flex  justify-between">
+                        <div className="flex flex-col w-[40%] ">
                           <label htmlFor="">Min Price</label>
-                          <input type="text" name='minprice' className="border p-2"  {...register("minprice", { required: true })}/>
+                          <input type="text" name='minprice' placeholder='0' className="border p-2"  {...register("minprice")}/>
                         </div>
                         {errors.minprice && (
                       <span className="text-red-500">
                        Min Price is required
                       </span>
                     )}
-                        <div className=" flex flex-col">
+                        <div className=" flex flex-col w-[40%]">
                           <label htmlFor="">Max Price</label>
-                          <input type="text" name='maxprice' className="border p-2 "  {...register("maxprice", { required: true })} />
+                          <input type="text" name='maxprice' placeholder='Any' className="border p-2 "  {...register("maxprice")} />
                         </div>
                         {errors.maxprice && (
                       <span className="text-red-500">
@@ -100,19 +106,19 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                       </span>
                     )}
                       </div>
-                      <div className=" ">
-                        <div className="flex flex-col ">
+                      <div className="flex justify-between ">
+                        <div className="flex flex-col  w-[40%]">
                           <label htmlFor="">Min Year</label>
-                          <input type="text" name='minyear' className="border p-2"  {...register("minyear", { required: true })}/>
+                          <input type="number" placeholder='1900' name='minyear'  className="border p-2"  {...register("minyear")}/>
                         </div>
                         {errors.minyear && (
                       <span className="text-red-500">
                       Min Year is required
                       </span>
                     )}
-                        <div className=" flex flex-col">
+                        <div className=" flex flex-col w-[40%]">
                           <label htmlFor="">Max Year</label>
-                          <input type="text" name='maxyear'  {...register("maxyear", { required: true })} className="border p-2 " />
+                          <input type="number" name='maxyear' placeholder='2024'  {...register("maxyear")} className="border p-2 " />
                         </div>
                         {errors.zip && (
                       <span className="text-red-500">
@@ -120,19 +126,19 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                       </span>
                     )}
                       </div>
-                      <div className=" ">
-                        <div className="flex flex-col ">
+                      <div className="flex justify-between ">
+                        <div className="flex flex-col w-[40%]">
                           <label htmlFor="">Min Millage</label>
-                          <input type="text" name='minmillage' {...register("minmillage", { required: true })}  className="border p-2" />
+                          <input type="text" placeholder='0' name='minmillage' {...register("minmillage")}  className="border p-2" />
                         </div>
                         {errors.minmillage && (
                       <span className="text-red-500">
                         Minmillage is required
                       </span>
                     )}
-                        <div className=" flex flex-col">
+                        <div className=" flex flex-col w-[40%]">
                           <label htmlFor="">Max Millage</label>
-                          <input type="text" name='maxmillage' className="border p-2 " {...register("maxmillage", { required: true })} />
+                          <input type="text" placeholder='Any' name='maxmillage' className="border p-2 " {...register("maxmillage")} />
                         </div>
                         {errors.maxmillage && (
                       <span className="text-red-500">
@@ -142,7 +148,7 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                       </div>
                       <div className="flex flex-col">
                         <label htmlFor="">Fuel type (gas, electric ,other)</label>
-                        <select name="fuel" id="" className="border p-2" {...register("fuel", { required: true })}>
+                        <select name="fuel" id="" className="border p-2" {...register("fuel")}>
                           <option value="" defaultValue >Select</option>
                           <option value="gas">Fuel</option>
                         </select>
@@ -154,21 +160,43 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                     )}
                       <div className="flex flex-col">
     <label htmlFor="">Transmission</label>
-    <input type="radio" name="transmission" value="automatic"  {...register("transmission",{ required: true })} /> Automatic
-    <input type="radio" name="transmission" value="manual"  {...register("transmission",{ required: true })}/> Manual
-    <input type="radio" name="transmission" value="semi-automatic" {...register("transmission",{ required: true })}/> Semi-Automatic
-                </div>
-                {errors.transmisson && (
+  <div className='flex'>
+  <input type="radio" className='mr-2' name="transmission" 
+   defaultChecked 
+   id="specifyColor"
+  value="automatic"  {...register("transmission")} />
+  <h3>Automatic</h3>
+  </div>
+  <div className='flex'>
+    <input type="radio" id="specifyColor"  className=' mr-2'   name="transmission" value="manual"  {...register("transmission")}/> Manual
+    </div>
+    <div className='flex'>
+    <input type="radio" id="specifyColor" className='mr-2' name="transmission" value="semi-automatic" {...register("transmission")}/> Semi-Automatic
+    </div> 
+    {errors.transmisson && (
                       <span className="text-red-500">
                         Zip/Postal is required
                       </span>
                     )}
+    </div>
+              
                       <div className="flex flex-col">
-    <label htmlFor="">Sale Type</label>
-<input type="radio" name="saletype" value="automatic"  {...register("saletype",{ required: true })}/> Any
-    <input type="radio" name="saletype" value="manual"  {...register("saletype",{ required: true })} /> Auction
-    <input type="radio" name="saletype" value="semi-automatic" {...register("saletype",{ required: true })}/> Calssified
-              </div>
+    <label htmlFor="" className='font-bold'>Sale Type</label>
+    <div className='flex'>
+<input type="radio" name="saletype"
+ defaultChecked 
+ id="specifyColor"
+value="automatic"  {...register("saletype")}
+className='mr-2'
+style={{backgroundColor:"red"}}
+/> Any
+</div>
+<div className='flex'>
+    <input type="radio" id="specifyColor" className='mr-2' name="saletype" value="manual"  {...register("saletype")} /> Auction
+    </div>
+    <div className='flex'>
+    <input type="radio" id="specifyColor" name="saletype" className='mr-2' value="semi-automatic" {...register("saletype")}/> Calssified
+    </div>   </div>
               {errors.saletype && (
                       <span className="text-red-500">
                        saletype is required
@@ -177,7 +205,7 @@ export default function RefineBySearchForm({onFilterSubmit}) {
 
               <div className="flex flex-col">
                         <label htmlFor="">Body Style</label>
-                        <select name="bodystyle" id=""  {...register("bodystyle", { required: true })} className="border p-2">
+                        <select name="bodystyle" id=""  {...register("bodystyle")} className="border p-2">
                           <option value="" defaultValue >Select</option>
                           <option value="curve">Body</option>
                         </select>
@@ -189,7 +217,7 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                     )}
               <div className="flex flex-col">
                         <label htmlFor="">Drive Type</label>
-                        <select name="drivetype"  {...register("drivetype", { required: true })} id="" className="border p-2">
+                        <select name="drivetype"  {...register("drivetype")} id="" className="border p-2">
                           <option value="" defaultValue >Select</option>
                           <option value="single">Drive Type</option>
                         </select>
@@ -201,7 +229,7 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                     )}
               <div className="flex flex-col">
                         <label htmlFor="">Exterior Color</label>
-                        <select name="" id="" className="border p-2"  {...register("exteriorcolor", { required: true })}>
+                        <select name="" id="" className="border p-2"  {...register("exteriorcolor")}>
                           <option value="" defaultValue >Select</option>
                           <option value="blue">Any</option>
                         </select>
@@ -213,7 +241,7 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                     )}
               <div className="flex flex-col">
                         <label htmlFor="">Interior Color</label>
-                        <select name="interiorcolor" id=""  {...register("interiorcolor", { required: true })} className="border p-2">
+                        <select name="interiorcolor" id=""  {...register("interiorcolor")} className="border p-2">
                           <option value="" defaultValue >Select</option>
                           <option value="gray">Any</option>
                         </select>
@@ -225,7 +253,7 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                     )}
               <div className="flex flex-col">
                         <label htmlFor="">Doors 2-3</label>
-                        <select name="doors" id="" className="border p-2"  {...register("doors", { required: true })}>
+                        <select name="doors" id="" className="border p-2"  {...register("doors")}>
                           <option value="" defaultValue >Select</option>
                           <option value="2">Any</option>
                         </select>
@@ -237,7 +265,7 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                     )}
               <div className="flex flex-col">
                         <label htmlFor="">cylinders</label>
-                        <select name="cylinders" id="" className="border p-2"  {...register("cylinders", { required: true })}>
+                        <select name="cylinders" id="" className="border p-2"  {...register("cylinders")}>
                           <option value="" defaultValue >Select</option>
                           <option value="2">Any</option>
                         </select>
@@ -248,8 +276,8 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                       </span>
                     )}
               <div className="flex flex-col">
-                        <label htmlFor="">Title</label>
-                        <select name="title" id="" className="border p-2" {...register("title", { required: true })} >
+                        <label htmlFor="" className='font-semibold'>Title</label>
+                        <select name="title" id="" className="border p-2" {...register("title")} >
                           <option value="" defaultValue >Select</option>
                           <option value="bmw">BMW</option>
                         </select>
@@ -260,10 +288,16 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                       </span>
                     )}
                       <div className="flex flex-col">
-    <label htmlFor="">For Sale By</label>
-    <input type="radio" name="forsaleby" value="automatic" {...register("forsaleby", { required: true })} /> Any
-    <input type="radio" name="forsaleby" value="manual"  {...register("forsaleby", { required: true })}/> Dealer
-    <input type="radio" name="forsaleby" value="semi-automatic" {...register("forsaleby", { required: true })}/> Private
+    <label htmlFor="" className='font-semibold'>For Sale By</label>
+    <div className='flex'>
+    <input type="radio" defaultChecked id="specifyColor" className='mr-2 ' name="forsaleby" value="automatic" {...register("forsaleby")} /> Any
+    </div>
+<div className='flex'>
+<input type="radio" className='mr-2' name="forsaleby" id="specifyColor" value="manual"  {...register("forsaleby")}/> Dealer
+</div>
+   <div className='flex'>
+   <input type="radio"  className='mr-2' name="forsaleby" id="specifyColor" value="semi-automatic" {...register("forsaleby")}/> Private
+   </div>
               </div>
               {errors.forsaleby && (
                       <span className="text-red-500">
@@ -272,7 +306,7 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                     )}
                 <div className='flex flex-col'>
                     <label htmlFor="">Keywords</label>
-                    <input type="text" className='border p-2' name='keywords'  {...register("keywords", { required: true })} />
+                    <input type="text" className='border p-2' name='keywords'  {...register("keywords")} />
                 </div>
                 {errors.keywords && (
                       <span className="text-red-500">
