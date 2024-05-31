@@ -1,9 +1,23 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function NewCarForm({onFilterCar}) {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  
+  const [forForm,setforForm]=useState();
+  const findcars=(async()=>{
+    try {
+        const response=await axios.get("http://localhost:3000/api/cars");
+       console.log(response.data.data);
+      setforForm(response.data.data)
+      
+    } catch (error) {
+    console.log("error in finding cars",error)
+    }
+  })
+  useEffect(()=>{
+         findcars();
+  },[]) 
   const onSubmit = (data) => {
     onFilterCar(data);
     
@@ -25,12 +39,13 @@ export default function NewCarForm({onFilterCar}) {
                       {...register("make",{required:"Make is required"})}
                       className="p-2 border"
                     >
-                      <option value=""  defaultValue>
-                        Select
-                      </option>
-                      <option value="make2">Make</option>
-                      <option value="make3">Make</option>
-                      <option value="make4">Make</option>
+                     {forForm?.map((item)=>{
+                      return(
+                        <option value={item.make}>{item.make}</option>
+                      )
+                     })}
+                     
+                    
                       
                     </select>
         
@@ -44,13 +59,11 @@ export default function NewCarForm({onFilterCar}) {
                       {...register("model",{required:"Model required"})}
                       className="p-2 border"
                     >
-                      <option value=""  defaultValue>
-                        Select
-                      </option>
-                      <option value="2017">Model 2017</option>
-                      <option value="2018">Model 2018</option>
-                      <option value="2019">Model 2019</option>
-                      <option value="2020">Model 2020</option>
+                        {forForm?.map((item)=>{
+                      return(
+                        <option value={item.model}>{item.model}</option>
+                      )
+                     })}
                     </select>
           
         </div>
@@ -59,7 +72,8 @@ export default function NewCarForm({onFilterCar}) {
           <label htmlFor="zip" className='font-semibold'>Zip*</label>
           <input
             className='border p-2'
-            type="text"
+            type="number"
+            name='zip'
             id="zip"
             {...register('zip', {
               required: 'Zip code is required',

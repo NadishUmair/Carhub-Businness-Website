@@ -1,9 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from "react-hook-form";
 import { FilterCar } from '../CarData';
 import './filterbysearch.css'
+import axios from 'axios';
 export default function RefineBySearchForm({onFilterSubmit}) {
- 
+  const [forForm,setforForm]=useState();
+  const findcars=(async()=>{
+    try {
+        const response=await axios.get("http://localhost:3000/api/cars");
+       console.log(response.data.data);
+      setforForm(response.data.data)
+      
+    } catch (error) {
+    console.log("error in finding cars",error)
+    }
+  })
+  useEffect(()=>{
+         findcars();
+  },[])
     const {
         register,
         handleSubmit,
@@ -17,18 +31,14 @@ export default function RefineBySearchForm({onFilterSubmit}) {
       })
   return (
     <div>
-            
               <div className='bg-white p-2'>
-                 
-                
                   <div className="">
                     <form action="" onSubmit={handleSubmit(onSubmit)}>
                       <div className="flex flex-col">
                         <label htmlFor="">Make</label>
-                        <select name="make" id="make" className="border p-2" {...register("make")}>
-                          <option value="" defaultValue >Select</option>
-                          <option value="make2">Make</option>
-                        </select>
+        
+                         <input type="text" name='make' id='make' className='border p-2' {...register("make")} /> 
+                        
                       </div>
                       {errors.make && (
                       <span className="text-red-500">
@@ -37,13 +47,8 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                     )}
                       <div className="flex flex-col">
                         <label htmlFor="">Model</label>
-                        <select name="model" id="" {...register("model")} className="border p-2">
-                          <option value="" defaultValue >Select</option>
-                          
-                          <option value="2017">Mode 2017</option>
-                          <option value="2018">Model 2018</option>
-                          <option value="2019">Model 2019</option>
-                        </select>
+                        <input type='text' name="model" id="" {...register("model")} className="border p-2" />
+                    
                       </div>
                       {errors.model && (
                       <span className="text-red-500">
@@ -61,8 +66,8 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                     )}
                       <div className=" flex justify-between  ">
                         <div className="flex flex-col w-[40%]">
-                          <label htmlFor="">Zip/Postal</label>
-                          <input type="text" name='zippostal' placeholder='Ex. 90210' className="border p-2" {...register("zippostal", { required: true })}  />
+                          <label htmlFor="zippostal">Zip/Postal</label>
+                          <input type="number" name='zippostal' placeholder='Ex. 90210' className="border p-2" {...register("zippostal", { required: true })}  />
                         <div>{errors.zippostal && (
                       <span className="text-red-500 text-[0.7rem]">
                         Zip/Postal is required
@@ -72,10 +77,9 @@ export default function RefineBySearchForm({onFilterSubmit}) {
 
                         <div className="w-[40%]">
                           <label htmlFor="">Distance</label>
-                          <select className="w-full border p-2" name='distance'  {...register("distance", { required: true })}>
-                            <option value="" defaultValue >Select</option>
-                            <option value="300">300km</option>
-                          </select>
+                          <input type='text' className="w-full border p-2" name='distance'  {...register("distance", { required: true })}/>
+                           
+                  
                           <div>
                           {errors.distance && (
                       <span className="text-red-500 text-[0.7rem]">
@@ -150,7 +154,9 @@ export default function RefineBySearchForm({onFilterSubmit}) {
                         <label htmlFor="">Fuel type (gas, electric ,other)</label>
                         <select name="fuel" id="" className="border p-2" {...register("fuel")}>
                           <option value="" defaultValue >Select</option>
-                          <option value="gas">Fuel</option>
+                          <option value="gas">gas</option>
+                          <option value="eectric">Electric</option>
+                          <option value="other">other</option>
                         </select>
                       </div>
                       {errors.fuel && (
@@ -219,7 +225,10 @@ style={{backgroundColor:"red"}}
                         <label htmlFor="">Drive Type</label>
                         <select name="drivetype"  {...register("drivetype")} id="" className="border p-2">
                           <option value="" defaultValue >Select</option>
-                          <option value="single">Drive Type</option>
+                          <option value="FWD">FWD</option>
+                  <option value="RWD">RWD</option>
+                  <option value="4WD">4WD</option>
+                  <option value="AWD">AWD</option>
                         </select>
                       </div>
                       {errors.drivetype && (
@@ -255,7 +264,14 @@ style={{backgroundColor:"red"}}
                         <label htmlFor="">Doors 2-3</label>
                         <select name="doors" id="" className="border p-2"  {...register("doors")}>
                           <option value="" defaultValue >Select</option>
-                          <option value="2">Any</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
                         </select>
                       </div>
                       {errors.doors && (
@@ -278,6 +294,11 @@ style={{backgroundColor:"red"}}
               <div className="flex flex-col">
                         <label htmlFor="" className='font-semibold'>Title</label>
                         <select name="title" id="" className="border p-2" {...register("title")} >
+                         {forForm?.map((item)=>{
+                          return(
+                            <option>{item.title}</option>
+                          )
+                         })}
                           <option value="" defaultValue >Select</option>
                           <option value="bmw">BMW</option>
                         </select>
@@ -310,21 +331,27 @@ style={{backgroundColor:"red"}}
                 </div>
                 {errors.keywords && (
                       <span className="text-red-500">
-                        Zip/Postal is required
+                        keywords is required
                       </span>
                     )}
                 <div className="flex flex-col">
-    <label htmlFor="">Show Last # of Days</label>
-       <select name="" id="" className='border p-2'>
-        <option value="">1</option>
-        <option value="">2</option>
-        <option value="">3</option>
-        <option value="">4</option>
+    <label htmlFor="lastofdays">Show Last # of Days</label>
+       <select name="lastofdays" id="lastofdays" className='border p-2'>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
        </select>
               </div>
-              {errors.zip && (
+              {errors.lastofdays && (
                       <span className="text-red-500">
-                        Zip/Postal is required
+                       lastofdays is required
                       </span>
                     )}
               <div className='flex   justify-between mt-4'>
