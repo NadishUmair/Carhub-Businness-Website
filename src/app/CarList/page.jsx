@@ -16,27 +16,28 @@ const CarList = () => {
   const [listgridView, setlistgridView] = useState(true);
   const searchParams = useSearchParams();
   const [carData, setCarData] = useState(null);
-  const [cars, setCars] = useState([]);
+  const [cars, setCars] = useState();
   const [handleRefinshow, sethandleRefineshow] = useState(false);
   const [showCarForm, setShowCarForm] = useState(false);
   const [searchDealer, setSearchDealer] = useState(true);
   const [sortOption, setsortOption] = useState();
-  const [FilterCar, setFilterCar] = useState([]);
+  const [FilterCar, setFilterCar] = useState();
   const [loading, setLoading] = useState(true); 
 
   const findcars = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/cars");
-      console.log(response.data.data);
+      const response = await axios.get("/api/cars");
+      // console.log("response",response.data.data);
       setFilterCar(response.data.data);
       setCars(response.data.data);
-      setLoading(false); 
+      setLoading(false);
+      console.log(response.data.data); 
     } catch (error) {
       console.log("error in finding cars", error);
     }
   };
 
-  console.log(cars);
+  // console.log(cars);
 
   const showDealerForm = () => {
     setSearchDealer(!searchDealer);
@@ -60,7 +61,7 @@ const CarList = () => {
     findcars();
   }, []);
 
-  console.log(FilterCar);
+  // console.log(FilterCar);
 
   useEffect(() => {
     const data = {
@@ -75,7 +76,7 @@ const CarList = () => {
 
     const anyFilterPresent = Object.values(data).some((value) => value);
 
-    if (FilterCar.length > 0) {
+    if (FilterCar?.length > 0) {
       if (anyFilterPresent) {
         const FilteredCars = FilterCar.filter((car) => {
           return (
@@ -94,46 +95,55 @@ const CarList = () => {
   }, [searchParams, FilterCar]); 
 
   const handleFilterSubmit = (data) => {
-    // console.log("data from refine", data);
-    // console.log("filtered car", FilterCar);
+    
 
     const refinefilter = FilterCar.filter((car) => {
-      console.log("data from refine",data);
-      console.log("car distance",car.distance);
-      if (String(data.distance) === String(car.distance)) {
-        console.log("hy");
-    }
+     
+   
+    const minPrice = Number(data.minprice);
+    const maxPrice = Number(data.maxprice);
+    const minMillage = Number(data.minmillage);
+    const maxMillage = Number(data.maxmillage);
+    const minYear = Number(data.minyear);
+    const maxYear = Number(data.maxyear);
+    const distance = Number(data.distance);
+    const cylinders = Number(data.cylinders);
+    const doors = Number(data.doors);
+    const zippostal= Number(data.zippostal)
+    console.log("Converted Values:", {
+      minPrice, maxPrice, minMillage, maxMillage, minYear, maxYear, distance, cylinders, doors
+    });
+    if (car.millage >= minMillage) {
+      console.log("hy");
+  }
       return (
-        // (data.make && car.make === data.make) ||
-        // (data.model && car.model === data.model) ||
-        (data.zippostal && String(car.zippostal) === String(data.zippostal))||
-        (data.distance && String(data.distance) === String(car.distance)) ||
-        (data.doors && String(car.doors)=== String(data.doors))
-        //  ||
-        // (data.cylinders && car.cylinders === data.cylinders) ||
-        // (data.fuel && car.fuel === data.fuel) ||
-        // (data.transmission && car.transmission === data.transmission) ||
-        // (data.drivetype && car.drivetype === data.drivetype) ||
-        // (data.minprice && car.price >= data.minprice) ||
-        // (data.maxprice && car.price <= data.maxprice) ||
-        //  (data.minmillage && car.millage >= data.minmillage) ||
-        // (data.maxmillage && car.millage <= data.maxmillage) ||
-        // (data.minyear && car.year >= data.minyear) ||
-        // (data.maxyear && car.year <= data.maxyear) ||
-        // (data.bodystyle && car.bodystyle === data.bodystyle) ||
-        // (data.exteriorcolor && car.exteriorcolor === data.exteriorcolor) ||
-        // (data.interiorcolor && car.interiorcolor === data.interiorcolor) ||
-        // (data.saletype && car.saletype === data.saletype) ||
-        // (data.forsaleby && car.forsaleby === data.forsaleby) ||
-        // (data.keywords && car.keywords.includes(data.keywords))
+        (data.make && car.make === data.make) ||
+        (data.model && car.model === data.model) ||
+        (data.zippostal && car.zippostal === zippostal)||
+        (data.distance && car.distance === distance) ||
+        (data.doors && car.doors === doors) ||
+        (data.cylinders && car.cylinders === cylinders)   ||
+        (data.fuel && car.fuel === data.fuel) ||
+        (data.transmission && car.transmission === data.transmission) ||
+        (data.drivetype && car.drivetype === data.drivetype) ||
+        (data.minprice && car.price >= minPrice) ||
+        (data.maxprice && car.price <= maxPrice) ||
+        (data.minmillage && car.millage >= minMillage) ||
+        (data.maxmillage && car.millage <= maxMillage)||
+        (data.minyear && car.year >= minYear)  ||
+        (data.maxyear && car.year <= maxYear) ||
+        (data.bodystyle && car.bodystyle === data.bodystyle) ||
+        (data.exteriorcolor && car.exteriorcolor === data.exteriorcolor) ||
+        (data.interiorcolor && car.interiorcolor === data.interiorcolor) ||
+        (data.saletype && car.saletype === data.saletype)  ||
+        (data.forsaleby && car.forsaleby === data.forsaleby) ||
+        (data.keywords && car.keywords.includes(data.keywords))
       
     );
     });
     console.log("refine filter",refinefilter);
     setCars(refinefilter);
 };
-
-  
 
   const handlecarfilter = (data) => {
     const filterBycar = FilterCar.filter((car) => {
@@ -156,17 +166,20 @@ const CarList = () => {
   const handleSort = (e) => {
     const value = e.target.value;
     if (value === "recentlyadded") {
-      FilterCar.map((car)=>{
-          console.log(car.updatedAt);
-      })
+      const today = new Date().toISOString().split('T')[0];
+      const filteredCars = FilterCar?.filter((car) => {
+        return (car.updatedAt.split('T')[0] === today);
+      });
       
+      setCars(filteredCars || []); 
+    } else {
+      const FilterSort = FilterCar.filter((car) => {
+        return value && car.cartype === value;
+      });
+      setCars(FilterSort);
     }
-    console.log(value);
-    const FilterSort = FilterCar.filter((car) => {
-      return value && car.cartype === value;
-    });
-    setCars(FilterSort);
   };
+  
 
   if (loading) return <div>Loading...</div>;
 
@@ -233,6 +246,7 @@ const CarList = () => {
                       onChange={handleSort}
                       className="w-full p-2 border outline-none"
                     >
+                      <option value="" defaultValue>Select</option>
                       <option value="recentlyadded">Recently Added</option>
                       <option value="new">New</option>
                       <option value="used">Used</option>

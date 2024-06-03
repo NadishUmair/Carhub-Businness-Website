@@ -26,7 +26,7 @@ export default function AdminAddCar() {
 
   const findDealers = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/dealer');
+      const response = await axios.get('/api/dealer');
       setDealers(response.data.data);
     } catch (error) {
       console.log("error in finding dealers", error);
@@ -48,10 +48,9 @@ export default function AdminAddCar() {
       ...data,
       carImage,
     };
-    console.log("cardata",carData);
-  console.log("car",data);
+  
     try {
-         const response=await axios.post('http://localhost:3000/api/cars',carData);
+         const response=await axios.post('/api/cars',carData);
          if (response.data.success) {
             toast.success(response.data.message);
           } else {
@@ -75,8 +74,8 @@ export default function AdminAddCar() {
         <div className="w-[80%]">
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Form fields for car details */}
-            <div className="flex justify-between">
-              <div className="flex flex-col w-[45%]">
+            <div className="md:flex justify-between">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="make">Make</label>
                 <input
                   type="text"
@@ -88,7 +87,7 @@ export default function AdminAddCar() {
                   <span className="text-red-500">Make is required</span>
                 )}
               </div>
-              <div className="flex flex-col w-[45%]">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="model">Model</label>
                 <input
                   type="text"
@@ -103,7 +102,7 @@ export default function AdminAddCar() {
               </div>
             </div>
             {/* Additional form fields */}
-            <div className="flex justify-between">
+            <div className="md:flex justify-between">
               <div className="flex flex-col w-[45%]">
                 <label htmlFor="touring">Touring</label>
                 <input
@@ -116,7 +115,7 @@ export default function AdminAddCar() {
                   <span className="text-red-500">Touring is required</span>
                 )}
               </div>
-              <div className="flex flex-col w-[45%]">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="dealer">Select Dealer Name</label>
                 <select
                   id="dealer"
@@ -139,8 +138,8 @@ export default function AdminAddCar() {
               </div>
             </div>
             {/* More form fields */}
-            <div className="flex justify-between">
-              <div className="flex flex-col w-[45%]">
+            <div className="md:flex justify-between">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="zippostal">Zip/Postal</label>
                 <input
                   type="number"
@@ -153,7 +152,7 @@ export default function AdminAddCar() {
                   <span className="text-red-500">Zip/Postal is required</span>
                 )}
               </div>
-              <div className="flex flex-col w-[45%]">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="distance">Distance</label>
                 <input
                   type="number"
@@ -167,8 +166,8 @@ export default function AdminAddCar() {
               </div>
             </div>
             {/* Additional form fields */}
-            <div className="flex justify-between">
-              <div className="flex flex-col w-[45%]">
+            <div className="md:flex justify-between">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="price">Price</label>
                 <input
                   type="number"
@@ -182,7 +181,7 @@ export default function AdminAddCar() {
                   <span className="text-red-500">Min Price is required</span>
                 )}
               </div>
-              <div className="flex flex-col w-[45%]">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="location">Location</label>
                 <input
                   type="text"
@@ -199,8 +198,8 @@ export default function AdminAddCar() {
               
             </div>
             {/* Add more form fields as needed */}
-            <div className="flex justify-between">
-              <div className="flex flex-col w-[45%]">
+            <div className="md:flex justify-between">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="year">Year</label>
                 <input
                   type="number"
@@ -214,7 +213,7 @@ export default function AdminAddCar() {
                 )}
               </div>
              
-              <div className="flex flex-col w-[45%]">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="cartype">Car Type</label>
                 <select name="cartype" type='text' className="border p-2" id="cartype" {...register("cartype", { required: true })}>
                   <option value="new">New</option>
@@ -228,8 +227,8 @@ export default function AdminAddCar() {
                
             </div>
             {/* Continue adding fields */}
-            <div className="flex justify-between">
-              <div className="flex flex-col w-[45%]">
+            <div className="md:flex justify-between">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="millage">Millage</label>
                 <input
                   type="number"
@@ -246,8 +245,8 @@ export default function AdminAddCar() {
              
             </div>
             {/* More fields */}
-            <div className="flex justify-between">
-              <div className="flex flex-col w-[45%]">
+            <div className="md:flex justify-between">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="fuel">Fuel Type (gas, electric, other)</label>
                 <input
                   type="text"
@@ -260,7 +259,7 @@ export default function AdminAddCar() {
                   <span className="text-red-500">Fuel is required</span>
                 )}
               </div>
-              <div className="flex flex-col w-[45%]">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="transmission">Transmission</label>
                 <select
                 type="text"
@@ -278,21 +277,26 @@ export default function AdminAddCar() {
               </div>
             </div>
             {/* Add the remaining fields */}
-            <div className="flex justify-between">
-              <div className="flex flex-col w-[45%]">
+            <div className="md:flex justify-between">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="saletype">Sale Type</label>
-                <input
-                  type="text"
+                <select
+                  
                   id="saletype"
                   placeholder="saletype"
                   className="border p-2"
                   {...register("saletype", { required: true })}
-                />
+                >
+
+                  <option value="any">Any</option>
+                  <option value="auction">Auction</option>
+                  <option value="classified">Classified</option>
+                  </select>
                 {errors.saletype && (
                   <span className="text-red-500">Sale Type is required</span>
                 )}
               </div>
-              <div className="flex flex-col w-[45%]">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="bodystyle">Body Style</label>
                 <input
                   type="text"
@@ -306,8 +310,8 @@ export default function AdminAddCar() {
                 )}
               </div>
             </div>
-            <div className="flex justify-between">
-              <div className="flex flex-col w-[45%]">
+            <div className="md:flex justify-between">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="drivetype">Drive Type</label>
                 <select name="drivetype" id="drivetype"   className="border p-2" {...register("drivetype", { required: true })} >
                   <option value="FWD">FWD</option>
@@ -319,7 +323,7 @@ export default function AdminAddCar() {
                   <span className="text-red-500">Drive Type is required</span>
                 )}
               </div>
-              <div className="flex flex-col w-[45%]">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="exteriorcolor">Exterior Color</label>
                 <input
                   type="text"
@@ -333,8 +337,8 @@ export default function AdminAddCar() {
                 )}
               </div>
             </div>
-            <div className="flex justify-between">
-              <div className="flex flex-col w-[45%]">
+            <div className="md:flex justify-between">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="interiorcolor">Interior Color</label>
                 <input
                   type="text"
@@ -347,7 +351,7 @@ export default function AdminAddCar() {
                   <span className="text-red-500">Interior Color is required</span>
                 )}
               </div>
-              <div className="flex flex-col w-[45%]">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="doors">Doors (2-3)</label>
                 <input
                   type="number"
@@ -363,8 +367,8 @@ export default function AdminAddCar() {
                 )}
               </div>
             </div>
-            <div className="flex justify-between">
-              <div className="flex flex-col w-[45%]">
+            <div className="md:flex justify-between">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="cylinder">Cylinders</label>
                 <input
                   type="number"
@@ -377,7 +381,7 @@ export default function AdminAddCar() {
                   <span className="text-red-500">Cylinders is required</span>
                 )}
               </div>
-              <div className="flex flex-col w-[45%]">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="title">Title</label>
                 <input
                   type="text"
@@ -391,8 +395,8 @@ export default function AdminAddCar() {
                 )}
               </div>
             </div>
-            <div className="flex justify-between">
-              <div className="flex flex-col w-[45%]">
+            <div className="md:flex justify-between">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="forsaleby">For Sale By</label>
                 <select
                   id="forsaleby"
@@ -408,7 +412,7 @@ export default function AdminAddCar() {
                   <span className="text-red-500">For Sale By is required</span>
                 )}
               </div>
-              <div className="flex flex-col w-[45%]">
+              <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="keywords">Keywords</label>
                 <input
                   type="text"
@@ -421,14 +425,14 @@ export default function AdminAddCar() {
                 )}
               </div>
             </div>
-            <div className="flex justify-between">
+            <div className="md:flex justify-between">
               <div className="flex flex-col">
                 <label htmlFor="carImage">Select Car Image</label>
                 <FileBase64 onDone={setCarImage} />
               </div>
               
             </div>
-            <div className="flex flex-col w-[45%]">
+            <div className="flex flex-col md:w-[45%]">
                 <label htmlFor="description">Description</label>
                 <textarea
                   type="text"

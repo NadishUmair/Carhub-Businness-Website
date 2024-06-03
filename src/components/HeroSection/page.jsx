@@ -10,7 +10,7 @@ const HeroSection = () => {
  const [cars,setCars]=useState();
   const findcars=(async()=>{
     try {
-        const response=await axios.get("http://localhost:3000/api/cars");
+        const response=await axios.get("/api/cars");
       
        setCars(response.data.data);
       

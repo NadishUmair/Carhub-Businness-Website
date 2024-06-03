@@ -1,10 +1,12 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminAddCar from '@/components/AdminAddCar/page';
+import { useRouter } from "next/navigation";
+
 
 const FileBase64 = ({ onDone }) => {
   const handleFileChange = (event) => {
@@ -23,8 +25,10 @@ const FileBase64 = ({ onDone }) => {
   );
 };
 const AdminAccess = () => {
+  const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [dealerlogo,setdealerlogo]=useState();
+  const [admin,setAdmin]=useState();
   console.log(dealerlogo);
   const onSubmit = async (data) => {
     const dealerData = {
@@ -32,7 +36,7 @@ const AdminAccess = () => {
      dealerlogo,
     };
     try {
-      const response = await axios.post('http://localhost:3000/api/dealer', dealerData);
+      const response = await axios.post('/api/dealer', dealerData);
      
       
       if (response.data.success) {
@@ -49,9 +53,27 @@ const AdminAccess = () => {
       }
     }
   };
-
+  useEffect(()=>{
+      const adminloged=localStorage.getItem("adminlogin");
+      if(!adminloged){
+        router.push('/AdminAuth')
+      }
+  },[])
+    const handleLogout=(()=>{
+      localStorage.removeItem("adminlogin");
+      const adminloged=localStorage.getItem("adminlogin");
+      if(!adminloged){
+        router.push('/AdminAuth')
+      }
+    })
+    
+   console.log(localStorage.getItem("adminlogin"))
+  
   return (
     <div>
+       <div className='flex justify-end mr-4 p-2'>
+        <button  onClick={handleLogout} className='text-red-500 border rounded-md hover:text-red-400 border-red-500 px-2 font-semibold text-xl'>Logout</button>
+    </div>
       <h1 className='text-center text-4xl mt-2 font-semibold'>
         Admin <span className='text-red-500'>Panel</span>
       </h1>

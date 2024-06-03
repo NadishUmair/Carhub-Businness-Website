@@ -15,7 +15,7 @@ export async function GET(){
   await dbConnect();
    try {
          const findDealers=await dealerModel.find();
-         console.log(findDealers);
+    
          return new Response(
           JSON.stringify({
             success: false,
@@ -49,10 +49,10 @@ export async function GET(){
 
 export async function POST(req,res) {
   await dbConnect();
-  console.log(req.body);
+  
   try {
     const { dealerName,dealerlogo } = await req.json();
-    console.log(dealerlogo);
+ 
     const findDealer=await dealerModel.findOne({dealerName})
     if(findDealer){
       // throw new Error("DealerName already exist")
