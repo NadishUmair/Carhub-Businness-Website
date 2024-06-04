@@ -1,35 +1,62 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import "./filterbysearch.css";
 import axios from "axios";
-export default function RefineBySearchForm({ onFilterSubmit }) {
-  const [forForm, setforForm] = useState();
+import "./filterbysearch.css";
+import { PuffLoader } from "react-spinners";
+
+export default function RefineBySearchForm({ onFilterSubmit, initialValues }) {
+  const [forForm, setforForm] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const findcars = async () => {
     try {
       const response = await axios.get("/api/cars");
       setforForm(response.data.data);
     } catch (error) {
       console.log("error in finding cars", error);
+    } finally{
+      setIsLoading(false);
     }
   };
+
   useEffect(() => {
     findcars();
   }, []);
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: initialValues,
+  });
+
+  useEffect(() => {
+    if (initialValues) {
+      Object.keys(initialValues).forEach(key => {
+        setValue(key, initialValues[key]);
+      });
+    }
+  }, [initialValues, setValue]);
+
   const onSubmit = (data) => {
     onFilterSubmit(data);
   };
+
   const resetRefinebySearch = () => {
     localStorage.removeItem("RefineBySearchData");
   };
+  
   return (
     <div>
       <div className="bg-white p-2">
         <div className="">
+        {isLoading ? (
+        <div className='flex flex-col justify-center items-center'>
+          <PuffLoader color="red" />
+        </div>
+      ) : (
           <form action="" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col">
               <label htmlFor="">Make</label>
@@ -72,13 +99,13 @@ export default function RefineBySearchForm({ onFilterSubmit }) {
             )}
             <div className=" flex justify-between  ">
               <div className="flex flex-col w-[40%]">
-                <label htmlFor="zippostal">Zip/Postal</label>
+                <label htmlFor="zip">Zip/Postal</label>
                 <input
                   type="number"
-                  name="zippostal"
+                  name="zip"
                   placeholder="Ex. 90210"
                   className="border p-2"
-                  {...register("zippostal", { required: true })}
+                  {...register("zip", { required: true })}
                 />
                 <div>
                   {errors.zippostal && (
@@ -504,11 +531,10 @@ export default function RefineBySearchForm({ onFilterSubmit }) {
               </div>
             </div>
           </form>
+          )}
         </div>
       </div>
-      <div>
-        <div>New Car</div>
-      </div>
+          
     </div>
   );
 }

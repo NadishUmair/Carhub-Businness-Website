@@ -3,8 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { PuffLoader } from 'react-spinners';
 
-export default function NewCarForm({ onFilterCar }) {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+export default function NewCarForm({ onFilterCar, initialValues }) {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: initialValues,
+  });
+
   const [forForm, setForForm] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,6 +32,14 @@ export default function NewCarForm({ onFilterCar }) {
     findCars();
   }, []);
 
+  useEffect(() => {
+    if (initialValues) {
+      Object.keys(initialValues).forEach(key => {
+        setValue(key, initialValues[key]);
+      });
+    }
+  }, [initialValues, setValue]);
+
   const onSubmit = (data) => {
     onFilterCar(data);
   };
@@ -34,7 +50,7 @@ export default function NewCarForm({ onFilterCar }) {
       {loading ? (
         <div className='flex flex-col justify-center items-center'>
           <PuffLoader color="red" />
-           </div>
+        </div>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
           <div className='flex flex-col'>
