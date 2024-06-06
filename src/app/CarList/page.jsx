@@ -129,17 +129,19 @@ const CarList = () => {
     setshowcars(refinefilter);
 };
 
-  const handlecarfilter = (data) => {
-    const filterBycar = FilterCar.filter((car) => {
-      return (
-        (data.make && car.make === data.make) ||
-        (data.model && car.model === data.model) ||
-        (data.zip && car.zippostal === data.zip)
-      );
-    });
-    setCars(filterBycar);
-    setshowcars(filterBycar);
-  };
+const handlecarfilter = (data) => {
+  const filterBycar = FilterCar.filter((car) => {
+    return (
+      (data.make && data.model && car.make === data.make && car.model === data.model) ||
+      (data.zip && car.zippostal === data.zip)
+    );
+  });
+
+  // setCars(filterBycar);
+  console.log("filter by car", filterBycar);
+  setshowcars(filterBycar);
+};
+
 
   const searchDealerHandler = (dealerName) => {
     const filteredDealers = cars.filter((item) => {

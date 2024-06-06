@@ -4,46 +4,82 @@ import { useForm } from 'react-hook-form';
 import { PuffLoader } from 'react-spinners';
 
 export default function NewCarForm({ onFilterCar, initialValues }) {
+
   const {
     register,
     handleSubmit,
+    watch,
     setValue,
     formState: { errors },
   } = useForm({
     defaultValues: initialValues,
   });
 
-  const [forForm, setForForm] = useState([]);
+  const [cars, setcars] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [uniqueMakes, setUniqueMakes] = useState([]);
+  const [modelsByMake, setModelsByMake] = useState({});
+  const [selectedMake, setSelectedMake] = useState(initialValues?.make || "");
   const findCars = async () => {
     try {
       const response = await axios.get('/api/cars');
       console.log(response.data.data);
-      setForForm(response.data.data);
+      setcars(response.data.data);
       setLoading(false);
     } catch (error) {
       console.log('Error in finding cars', error);
       setLoading(false);
     }
   };
-
+ console.log(uniqueMakes)
   useEffect(() => {
     findCars();
   }, []);
+  useEffect(() => {
+    if (cars) {
+      const makes = [...new Set(cars.map((car) => car.make))];
+      setUniqueMakes(makes);
 
+      const models = cars.reduce((acc, car) => {
+        if (!acc[car.make]) {
+          acc[car.make] = [];
+        }
+        if (!acc[car.make].includes(car.model)) {
+          acc[car.make].push(car.model);
+        }
+        return acc;
+      }, {});
+
+      setModelsByMake(models);
+    }
+  }, [cars]);
   useEffect(() => {
     if (initialValues) {
-      Object.keys(initialValues).forEach(key => {
+      Object.keys(initialValues).forEach((key) => {
         setValue(key, initialValues[key]);
       });
+      setSelectedMake(initialValues.make || "");
     }
   }, [initialValues, setValue]);
+
 
   const onSubmit = (data) => {
     onFilterCar(data);
   };
+  const handleMakeChange = (e) => {
+    const newMake = e.target.value;
+    setSelectedMake(newMake);
+    setValue("model", ""); // Reset model when make changes
+  };
+  const watchMake = watch("make");
 
+  useEffect(() => {
+    if (watchMake && modelsByMake[watchMake]) {
+      setSelectedMake(watchMake);
+      // Set the default value for the model select element
+      setValue("model", initialValues?.model || "");
+    }
+  }, [watchMake, modelsByMake, setValue, initialValues]);
   return (
     <div className='bg-white p-4'>
       <h3>Select options and see pricing on new vehicles from nearby dealers.</h3>
@@ -59,10 +95,13 @@ export default function NewCarForm({ onFilterCar, initialValues }) {
               name="make"
               id="make"
               {...register("make", { required: "Make is required" })}
+              defaultValue={initialValues?.make || ""}
+              onChange={handleMakeChange}
               className="p-2 border"
             >
-              {forForm.map((item, index) => (
-                <option key={index} value={item.make}>{item.make}</option>
+              <option value="" disabled>Select</option>
+              {uniqueMakes.map((make) => (
+                <option value={make}>{make}</option>
               ))}
             </select>
             {errors.make && <span className='text-red-500 text-sm'>{errors.make.message}</span>}
@@ -73,11 +112,13 @@ export default function NewCarForm({ onFilterCar, initialValues }) {
             <select
               name="model"
               id="model"
+              defaultValue={initialValues?.model || ""}
               {...register("model", { required: "Model is required" })}
               className="p-2 border"
             >
-              {forForm.map((item, index) => (
-                <option key={index} value={item.model}>{item.model}</option>
+              <option value="" disabled>Select</option>
+              {modelsByMake[selectedMake]?.map((model) => (
+                <option value={model}>{model}</option>
               ))}
             </select>
             {errors.model && <span className='text-red-500 text-sm'>{errors.model.message}</span>}

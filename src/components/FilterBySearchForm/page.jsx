@@ -5,48 +5,90 @@ import "./filterbysearch.css";
 import { PuffLoader } from "react-spinners";
 
 export default function RefineBySearchForm({ onFilterSubmit, initialValues }) {
-  const [forForm, setforForm] = useState([]);
+  const [forForm, setForForm] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const findcars = async () => {
-    try {
-      const response = await axios.get("/api/cars");
-      setforForm(response.data.data);
-    } catch (error) {
-      console.log("error in finding cars", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    findcars();
-  }, []);
+  const [uniqueMakes, setUniqueMakes] = useState([]);
+  const [modelsByMake, setModelsByMake] = useState({});
+  const [selectedMake, setSelectedMake] = useState(initialValues?.make || "");
 
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: initialValues,
   });
 
   useEffect(() => {
+    const findCars = async () => {
+      try {
+        const response = await axios.get("/api/cars");
+        setForForm(response.data.data);
+      } catch (error) {
+        console.log("Error in finding cars", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    findCars();
+  }, []);
+
+  useEffect(() => {
     if (initialValues) {
       Object.keys(initialValues).forEach((key) => {
         setValue(key, initialValues[key]);
       });
+      setSelectedMake(initialValues.make || "");
     }
   }, [initialValues, setValue]);
+ console.log("initial values",initialValues);
+  useEffect(() => {
+    if (forForm.length > 0) {
+      const makes = [...new Set(forForm.map((car) => car.make))];
+      setUniqueMakes(makes);
+    
+      const models = forForm.reduce((acc, car) => {
+        if (!acc[car.make]) {
+          acc[car.make] = [];
+        }
+        if (!acc[car.make].includes(car.model)) {
+          acc[car.make].push(car.model);
+        }
+        return acc;
+      }, {});
+
+      setModelsByMake(models);
+    }
+  }, [forForm]);
+
+  const handleMakeChange = (e) => {
+    const newMake = e.target.value;
+    setSelectedMake(newMake);
+    setValue("model", ""); // Reset model when make changes
+  };
+ console.log("uniques makes",uniqueMakes);
+  console.log("slected model",selectedMake);
+   console.log("models by make",modelsByMake)
+  const resetRefinebySearch = () => {
+    localStorage.removeItem("RefineBySearchData");
+  };
 
   const onSubmit = (data) => {
     onFilterSubmit(data);
   };
 
-  const resetRefinebySearch = () => {
-    localStorage.removeItem("RefineBySearchData");
-  };
+  const watchMake = watch("make");
+
+  useEffect(() => {
+    if (watchMake && modelsByMake[watchMake]) {
+      setSelectedMake(watchMake);
+      // Set the default value for the model select element
+      setValue("model", initialValues?.model || "");
+    }
+  }, [watchMake, modelsByMake, setValue, initialValues]);
 
   return (
     <div>
@@ -59,21 +101,26 @@ export default function RefineBySearchForm({ onFilterSubmit, initialValues }) {
           ) : (
             <form action="" onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col">
-                <label htmlFor="">Make</label>
+                <label htmlFor="make">Make</label>
 
                 <select
                   type="text"
                   name="make"
                   id="make"
-                  className="border p-2"
                   {...register("make")}
+                  className="border p-2"
+                  onChange={handleMakeChange}
+                  defaultValue={initialValues?.make || ""}
+                 
                 >
-                  <option value="" defaultValue>
+                  <option value="" disabled>
                     Select
                   </option>
-                  {forForm.map((item) => {
-                    return <option value={item.make}>{item.make}</option>;
-                  })}
+                  {uniqueMakes.map((make) => (
+                    <option key={make} value={make}>
+                      {make}
+                    </option>
+                  ))}
                 </select>
               </div>
               {errors.make && (
@@ -87,13 +134,16 @@ export default function RefineBySearchForm({ onFilterSubmit, initialValues }) {
                   id=""
                   {...register("model")}
                   className="border p-2"
+                  defaultValue={initialValues?.model || ""}
                 >
-                  <option value="" defaultValue>
+                  <option value="" disabled>
                     Select
                   </option>
-                  {forForm.map((item) => {
-                    return <option value={item.model}>{item.model}</option>;
-                  })}
+                  {modelsByMake[selectedMake]?.map((model) => (
+                    <option key={model} value={model}>
+                      {model}
+                    </option>
+                  ))}
                 </select>
               </div>
               {errors.model && (
