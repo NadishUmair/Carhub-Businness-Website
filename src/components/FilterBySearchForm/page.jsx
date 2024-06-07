@@ -4,22 +4,33 @@ import axios from "axios";
 import "./filterbysearch.css";
 import { PuffLoader } from "react-spinners";
 
-export default function RefineBySearchForm({ onFilterSubmit, initialValues }) {
+export default function RefineBySearchForm({ onFilterSubmit,onResetSearchParams  }) {
+  const [initialValues, setInitialValues] = useState({});
   const [forForm, setForForm] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [uniqueMakes, setUniqueMakes] = useState([]);
   const [modelsByMake, setModelsByMake] = useState({});
-  const [selectedMake, setSelectedMake] = useState(initialValues?.make || "");
+  const [selectedMake, setSelectedMake] = useState("");
 
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: initialValues,
   });
+
+  useEffect(() => {
+    const savedData = localStorage.getItem("savedFormData");
+    const initialVal = savedData ? JSON.parse(savedData) : {};
+    setInitialValues(initialVal);
+    reset(initialVal);
+  }, [reset]);
+
+  console.log("initial", initialValues);
 
   useEffect(() => {
     const findCars = async () => {
@@ -37,19 +48,10 @@ export default function RefineBySearchForm({ onFilterSubmit, initialValues }) {
   }, []);
 
   useEffect(() => {
-    if (initialValues) {
-      Object.keys(initialValues).forEach((key) => {
-        setValue(key, initialValues[key]);
-      });
-      setSelectedMake(initialValues.make || "");
-    }
-  }, [initialValues, setValue]);
- console.log("initial values",initialValues);
-  useEffect(() => {
     if (forForm.length > 0) {
       const makes = [...new Set(forForm.map((car) => car.make))];
       setUniqueMakes(makes);
-    
+
       const models = forForm.reduce((acc, car) => {
         if (!acc[car.make]) {
           acc[car.make] = [];
@@ -69,15 +71,23 @@ export default function RefineBySearchForm({ onFilterSubmit, initialValues }) {
     setSelectedMake(newMake);
     setValue("model", ""); // Reset model when make changes
   };
- console.log("uniques makes",uniqueMakes);
-  console.log("slected model",selectedMake);
-   console.log("models by make",modelsByMake)
-  const resetRefinebySearch = () => {
-    localStorage.removeItem("RefineBySearchData");
-  };
+
+const resetRefinebySearch = () => {
+  // Remove saved form data
+  localStorage.removeItem("savedFormData");
+  
+  // Reset form
+  reset();
+  setInitialValues({});
+  
+  // Call the function to reset search parameters
+onResetSearchParams();
+};
+
 
   const onSubmit = (data) => {
     onFilterSubmit(data);
+    localStorage.setItem("savedFormData", JSON.stringify(data));
   };
 
   const watchMake = watch("make");
@@ -621,7 +631,7 @@ export default function RefineBySearchForm({ onFilterSubmit, initialValues }) {
               )}
               <div className="flex   justify-between mt-4">
                 <div
-                  className="bg-red-500 px-2 py-1 rounded-lg w-[43%] text-white font-bold text-center"
+                  className="bg-red-500 px-2 py-1 cursor-pointer rounded-lg w-[43%] text-white font-bold text-center"
                   onClick={resetRefinebySearch}
                 >
                   Reset

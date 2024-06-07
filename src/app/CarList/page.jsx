@@ -56,7 +56,6 @@ const CarList = () => {
   useEffect(() => {
     findcars();
   }, []);
-
   useEffect(() => {
     const data = {
       make: searchParams.get("make"),
@@ -65,28 +64,47 @@ const CarList = () => {
       distance: searchParams.get("distance"),
       carType: searchParams.get("carType"),
     };
-
+  
+    console.log("params", data);
+  
+    // Set the car data to local storage
+    localStorage.setItem("savedFormData", JSON.stringify(data));
+  
+    // Update the state with the car data
     setCarData(data);
+  
+    // Check if any filter is present
     const anyFilterPresent = Object.values(data).some((value) => value);
-    if (FilterCar?.length > 0) {
-      if (anyFilterPresent) {
-        const FilteredCars = FilterCar?.filter((car) => {
-          return (
-            (data.make && car.make === data.make) ||
-            (data.model && car.model === data.model) ||
-            (data.zip && car.zippostal === data.zip) ||
-            (data.distance && car.distance === data.distance) ||
-            (data.carType && car.cartype === data.carType)
-          );
-        });
-        setCars(FilteredCars);
-        setshowcars(FilteredCars)
-      } else {
-        setCars(FilterCar);
-      }
+  
+    // If no filters are applied, show all cars from the API
+    if (!anyFilterPresent) {
+      setCars(FilterCar);
+      setshowcars(FilterCar);
+      return; // Exit early
     }
-  }, [searchParams, FilterCar]); 
-
+  
+    // Apply filters if any
+    if (FilterCar?.length > 0) {
+      const FilteredCars = FilterCar.filter((car) => {
+        return (
+          (!data.make || car.make === data.make) &&
+          (!data.model || car.model === data.model) ||
+          (!data.zip && car.zippostal === data.zip) ||
+          (!data.distance && car.distance === data.distance) ||
+          (!data.carType && car.cartype === data.carType)
+        );
+      });
+      setCars(FilteredCars);
+      setshowcars(FilteredCars);
+    } else {
+      // If no cars to filter from, set to an empty array
+      setCars([]);
+      setshowcars([]);
+    }
+  }, [searchParams, FilterCar]);
+  
+  
+console.log("show",showcars);
   const handleFilterSubmit = (data) => {
     const refinefilter = FilterCar.filter((car) => {
     const minPrice = Number(data.minprice);
@@ -128,7 +146,7 @@ const CarList = () => {
     setCars(refinefilter);
     setshowcars(refinefilter);
 };
-
+console.log(localStorage);
 const handlecarfilter = (data) => {
   const filterBycar = FilterCar.filter((car) => {
     return (
@@ -168,6 +186,16 @@ const handlecarfilter = (data) => {
       setshowcars(FilterSort);
     }
   };
+  const handleResetSearchParams = () => {
+    const queryParams = new URLSearchParams();
+    queryParams.delete("make");
+    queryParams.delete("model");
+    queryParams.delete("zip");
+    queryParams.delete("distance");
+    queryParams.delete("carType");
+    window.history.replaceState({}, document.title, window.location.pathname + "?" + queryParams.toString());
+
+  };
   
 
   if (loading) return <div>Loading...</div>;
@@ -206,7 +234,7 @@ const handlecarfilter = (data) => {
               Refine Filter
             </div>
             {handleRefinshow && (
-              <RefineBySearchForm onFilterSubmit={handleFilterSubmit} initialValues={carData} />
+              <RefineBySearchForm onFilterSubmit={handleFilterSubmit} onResetSearchParams={handleResetSearchParams}  />
             )}
             <div
               className="mt-8 text-center bg-gray-100 p-2 font-bold cursor-pointer hover:bg-gray-50"
@@ -214,7 +242,7 @@ const handlecarfilter = (data) => {
             >
               New car
             </div>
-            {showCarForm && <NewCarForm onFilterCar={handlecarfilter} initialValues={carData} />}
+            {showCarForm && <NewCarForm onFilterCar={handlecarfilter} initialValues={carData}/>}
           </div>
           <div className="md:w-[75%] p-2">
             <div className="flex justify-between ">
