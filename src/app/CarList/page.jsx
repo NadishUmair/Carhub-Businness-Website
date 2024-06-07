@@ -64,18 +64,9 @@ const CarList = () => {
       distance: searchParams.get("distance"),
       carType: searchParams.get("carType"),
     };
-  
-    console.log("params", data);
-  
-    // Set the car data to local storage
     localStorage.setItem("savedFormData", JSON.stringify(data));
-  
-    // Update the state with the car data
     setCarData(data);
-  
-    // Check if any filter is present
     const anyFilterPresent = Object.values(data).some((value) => value);
-  
     // If no filters are applied, show all cars from the API
     if (!anyFilterPresent) {
       setCars(FilterCar);
@@ -97,7 +88,7 @@ const CarList = () => {
       setCars(FilteredCars);
       setshowcars(FilteredCars);
     } else {
-      // If no cars to filter from, set to an empty array
+   
       setCars([]);
       setshowcars([]);
     }
@@ -158,31 +149,33 @@ const handlecarfilter = (data) => {
   // setCars(filterBycar);
   console.log("filter by car", filterBycar);
   setshowcars(filterBycar);
+  setCars(filterBycar)
 };
 
 
   const searchDealerHandler = (dealerName) => {
-    const filteredDealers = cars.filter((item) => {
+    const filteredDealers = FilterCar?.filter((item) => {
       return dealerName && item.dealername === dealerName;
     });
     setshowcars(filteredDealers);
+    setCars(filteredDealers);
   };
 
   const handleSort = (e) => {
     const value = e.target.value;
     if (value === "recentlyadded"){
       const today = new Date().toISOString().split('T')[0];
-      const filteredCars = cars?.filter((car) => {
+      const filteredCars = FilterCar.filter((car) => {
         return (car.updatedAt.split('T')[0] === today);
       });
       
-      // setCars(filteredCars || []); 
+      setCars(filteredCars || []); 
       setshowcars(filteredCars || [])
     } else {
-      const FilterSort = cars.filter((car) => {
+      const FilterSort = FilterCar.filter((car) => {
         return value && car.cartype === value;
       });
-      // setCars(FilterSort);
+      setCars(FilterSort);
       setshowcars(FilterSort);
     }
   };

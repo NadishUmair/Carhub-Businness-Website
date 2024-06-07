@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { PuffLoader } from 'react-spinners';
 
-export default function NewCarForm({ onFilterCar, initialValues }) {
+export default function NewCarForm({ onFilterCar}) {
 
   const {
     register,
@@ -12,14 +12,14 @@ export default function NewCarForm({ onFilterCar, initialValues }) {
     setValue,
     formState: { errors },
   } = useForm({
-    defaultValues: initialValues,
+   
   });
 
   const [cars, setcars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uniqueMakes, setUniqueMakes] = useState([]);
   const [modelsByMake, setModelsByMake] = useState({});
-  const [selectedMake, setSelectedMake] = useState(initialValues?.make || "");
+  const [selectedMake, setSelectedMake] = useState("");
   const findCars = async () => {
     try {
       const response = await axios.get('/api/cars');
@@ -53,33 +53,16 @@ export default function NewCarForm({ onFilterCar, initialValues }) {
       setModelsByMake(models);
     }
   }, [cars]);
-  useEffect(() => {
-    if (initialValues) {
-      Object.keys(initialValues).forEach((key) => {
-        setValue(key, initialValues[key]);
-      });
-      setSelectedMake(initialValues.make || "");
-    }
-  }, [initialValues, setValue]);
+
 
 
   const onSubmit = (data) => {
     onFilterCar(data);
   };
   const handleMakeChange = (e) => {
-    const newMake = e.target.value;
-    setSelectedMake(newMake);
-    setValue("model", ""); // Reset model when make changes
+    setSelectedMake(e.target.value);
   };
-  const watchMake = watch("make");
-
-  useEffect(() => {
-    if (watchMake && modelsByMake[watchMake]) {
-      setSelectedMake(watchMake);
-      // Set the default value for the model select element
-      setValue("model", initialValues?.model || "");
-    }
-  }, [watchMake, modelsByMake, setValue, initialValues]);
+ 
   return (
     <div className='bg-white p-4'>
       <h3>Select options and see pricing on new vehicles from nearby dealers.</h3>
@@ -95,7 +78,7 @@ export default function NewCarForm({ onFilterCar, initialValues }) {
               name="make"
               id="make"
               {...register("make", { required: "Make is required" })}
-              defaultValue={initialValues?.make || ""}
+             
               onChange={handleMakeChange}
               className="p-2 border"
             >
@@ -112,7 +95,7 @@ export default function NewCarForm({ onFilterCar, initialValues }) {
             <select
               name="model"
               id="model"
-              defaultValue={initialValues?.model || ""}
+             
               {...register("model", { required: "Model is required" })}
               className="p-2 border"
             >
