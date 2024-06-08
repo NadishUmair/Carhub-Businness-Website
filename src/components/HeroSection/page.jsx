@@ -145,7 +145,7 @@ const HeroSection = () => {
                       id="model"
                       {...register("model")}
                       className="p-2 border"
-                      disabled={!selectedMake} // Disable if no make is selected
+                      disabled={!selectedMake} 
                     >
                       <option value="">Select</option>
                       {modelsByMake[selectedMake]?.map((model) => (

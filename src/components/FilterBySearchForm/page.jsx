@@ -73,17 +73,41 @@ export default function RefineBySearchForm({ onFilterSubmit,onResetSearchParams 
     setValue("model", ""); // Reset model when make changes
   };
 
-const resetRefinebySearch = () => {
-
-  localStorage.removeItem("savedFormData");
+  const resetRefinebySearch = () => {
+    localStorage.removeItem("savedFormData");
   
-
-  reset();
-  setInitialValues({});
+    reset({
+      make: "",
+      model: "",
+      touring: "",
+      zip: "",
+      distance: "",
+      minprice: "",
+      maxprice: "",
+      minyear: "",
+      maxyear: "",
+      minmillage: "",
+      maxmillage: "",
+      fuel: "",
+      transmission: "",
+      saletype: "",
+      bodystyle: "",
+      drivetype: "",
+      exteriorcolor: "",
+      interiorcolor: "",
+      doors: "",
+      cylinders: "",
+      title: "",
+      forsaleby: "",
+      keywords: "",
+      lastofdays: "",
+    });
   
- 
-onResetSearchParams();
-};
+    setInitialValues({});
+  
+    onResetSearchParams();
+  };
+  
 
 
   const onSubmit = (data) => {
@@ -124,7 +148,7 @@ onResetSearchParams();
                   defaultValue={initialValues?.make || ""}
                  
                 >
-                  <option value="" disabled>
+                  <option value="" >
                     Select
                   </option>
                   {uniqueMakes.map((make) => (
@@ -147,7 +171,7 @@ onResetSearchParams();
                   className="border p-2"
                   defaultValue={initialValues?.model || ""}
                 >
-                  <option value="" disabled>
+                  <option value="">
                     Select
                   </option>
                   {modelsByMake[selectedMake]?.map((model) => (
@@ -192,13 +216,22 @@ onResetSearchParams();
                 </div>
 
                 <div className="w-[40%]">
-                  <label htmlFor="">Distance</label>
-                  <input
-                    type="text"
-                    className="w-full border p-2"
-                    name="distance"
-                    {...register("distance", { required: true })}
-                  />
+                <label htmlFor="distance">Distance</label>
+                    <select
+                      name="distance"
+                      id="distance"
+                      {...register("distance", { required: true })}
+                      className="p-2 border"
+                    >
+                      <option value="">Select</option>
+                      <option value="10">10 miles</option>
+                      <option value="25">25 miles</option>
+                      <option value="50">50 miles</option>
+                      <option value="100">100 miles</option>
+                    </select>
+                    {errors.distance && (
+                      <span className="text-red-500">Distance is required</span>
+                    )}
 
                   <div>
                     {errors.distance && (
