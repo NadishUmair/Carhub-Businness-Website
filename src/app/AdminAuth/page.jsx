@@ -25,7 +25,7 @@ export default function Login() {
     }));
   };
 
-//   const alreadyexist = localStorage.getItem('user');
+
 
   const handlesubmitt = async (e) => {
     e.preventDefault();
@@ -49,7 +49,7 @@ export default function Login() {
       toast.error(error.response?.data?.message || "Login failed");
     }
   };
-console.log("admin in auth",localStorage.getItem("adminLogin"))
+
   return (
     <>
       <form onSubmit={handlesubmitt} className="text-gray-600 body-font relative">

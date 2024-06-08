@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -73,14 +74,14 @@ export default function RefineBySearchForm({ onFilterSubmit,onResetSearchParams 
   };
 
 const resetRefinebySearch = () => {
-  // Remove saved form data
+
   localStorage.removeItem("savedFormData");
   
-  // Reset form
+
   reset();
   setInitialValues({});
   
-  // Call the function to reset search parameters
+ 
 onResetSearchParams();
 };
 

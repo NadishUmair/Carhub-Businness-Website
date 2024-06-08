@@ -137,7 +137,7 @@ console.log("show",showcars);
     setCars(refinefilter);
     setshowcars(refinefilter);
 };
-console.log(localStorage);
+
 const handlecarfilter = (data) => {
   const filterBycar = FilterCar.filter((car) => {
     return (
@@ -147,7 +147,7 @@ const handlecarfilter = (data) => {
   });
 
   // setCars(filterBycar);
-  console.log("filter by car", filterBycar);
+ 
   setshowcars(filterBycar);
   setCars(filterBycar)
 };

@@ -81,8 +81,9 @@ export default function NewCarForm({ onFilterCar}) {
              
               onChange={handleMakeChange}
               className="p-2 border"
+              value={selectedMake}
             >
-              <option value="" disabled>Select</option>
+              <option value="">Select</option>
               {uniqueMakes.map((make) => (
                 <option value={make}>{make}</option>
               ))}
@@ -99,7 +100,7 @@ export default function NewCarForm({ onFilterCar}) {
               {...register("model", { required: "Model is required" })}
               className="p-2 border"
             >
-              <option value="" disabled>Select</option>
+              <option value="">Select</option>
               {modelsByMake[selectedMake]?.map((model) => (
                 <option value={model}>{model}</option>
               ))}

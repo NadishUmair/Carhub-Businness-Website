@@ -49,12 +49,9 @@ const HeroSection = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [carType, setCarType] = useState("used"); 
+  const [carType, setCarType] = useState("used");
 
   const onSubmit = (data) => {
-    // Check if make is captured correctly
-   
-
     const carTypeValue = carType === "used" ? "Used Car" : "New Car";
     const carData = {
       make: data.make,
@@ -125,13 +122,12 @@ const HeroSection = () => {
                     <select
                       name="make"
                       id="make"
-                      {...register("make", { required: true })} // Ensure 'make' is required
+                      {...register("make")} 
                       className="p-2 border"
                       onChange={handleMakeChange}
+                      value={selectedMake}
                     >
-                      <option value="" disabled>
-                        Select
-                      </option>
+                      <option value="">Select</option>
                       {uniqueMakes.map((make) => (
                         <option key={make} value={make}>
                           {make}
@@ -149,10 +145,9 @@ const HeroSection = () => {
                       id="model"
                       {...register("model")}
                       className="p-2 border"
+                      disabled={!selectedMake} // Disable if no make is selected
                     >
-                      <option value="" disabled selected>
-                        Select
-                      </option>
+                      <option value="">Select</option>
                       {modelsByMake[selectedMake]?.map((model) => (
                         <option key={model} value={model}>
                           {model}
@@ -183,9 +178,7 @@ const HeroSection = () => {
                       {...register("distance", { required: true })}
                       className="p-2 border"
                     >
-                      <option value="" disabled>
-                        Select
-                      </option>
+                      <option value="">Select</option>
                       <option value="10">10 miles</option>
                       <option value="25">25 miles</option>
                       <option value="50">50 miles</option>
