@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner component
 
 const HeroSection = () => {
   const router = useRouter();
@@ -11,6 +12,7 @@ const HeroSection = () => {
   const [uniqueMakes, setUniqueMakes] = useState([]);
   const [modelsByMake, setModelsByMake] = useState({});
   const [selectedMake, setSelectedMake] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
 
   const findCars = async () => {
     try {
@@ -51,7 +53,8 @@ const HeroSection = () => {
   } = useForm();
   const [carType, setCarType] = useState("used");
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    setLoading(true); // Set loading to true when form is submitted
     const carTypeValue = carType === "used" ? "Used Car" : "New Car";
     const carData = {
       make: data.make,
@@ -201,6 +204,11 @@ const HeroSection = () => {
             </div>
           </div>
         </section>
+        {loading && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <ClipLoader color="#b91c1c" loading={loading} size={150} />
+          </div>
+        )}
       </div>
     </>
   );

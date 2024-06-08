@@ -23,6 +23,9 @@ const CarList = () => {
   const [FilterCar, setFilterCar] = useState();
   const [loading, setLoading] = useState(true); 
   const [showcars,setshowcars]=useState();
+  const [handlerefinembl,sethandlerefinembl]=useState(false);
+  const [handlesearchcarmbl,sethandlesearchcarmbl]=useState(false);
+  const [handlesearchdealermbl,sethandlesearchdealermbl]=useState(false);
 
   const findcars = async () => {
     try {
@@ -67,14 +70,14 @@ const CarList = () => {
     localStorage.setItem("savedFormData", JSON.stringify(data));
     setCarData(data);
     const anyFilterPresent = Object.values(data).some((value) => value);
-    // If no filters are applied, show all cars from the API
+  
     if (!anyFilterPresent) {
       setCars(FilterCar);
       setshowcars(FilterCar);
-      return; // Exit early
+      return; 
     }
   
-    // Apply filters if any
+   
     if (FilterCar?.length > 0) {
       const FilteredCars = FilterCar.filter((car) => {
         return (
@@ -94,8 +97,7 @@ const CarList = () => {
     }
   }, [searchParams, FilterCar]);
   
-  
-console.log("show",showcars);
+
   const handleFilterSubmit = (data) => {
     const refinefilter = FilterCar.filter((car) => {
     const minPrice = Number(data.minprice);
@@ -136,6 +138,7 @@ console.log("show",showcars);
     });
     setCars(refinefilter);
     setshowcars(refinefilter);
+    sethandlerefinembl(false);
 };
 
 const handlecarfilter = (data) => {
@@ -144,12 +147,14 @@ const handlecarfilter = (data) => {
       (data.make && data.model && car.make === data.make && car.model === data.model) ||
       (data.zip && car.zippostal === data.zip)
     );
+    
   });
 
   // setCars(filterBycar);
  
   setshowcars(filterBycar);
   setCars(filterBycar)
+  sethandlesearchcarmbl(false);
 };
 
 
@@ -159,6 +164,7 @@ const handlecarfilter = (data) => {
     });
     setshowcars(filteredDealers);
     setCars(filteredDealers);
+    sethandlesearchdealermbl(false);
   };
 
   const handleSort = (e) => {
@@ -189,8 +195,24 @@ const handlecarfilter = (data) => {
     window.history.replaceState({}, document.title, window.location.pathname + "?" + queryParams.toString());
 
   };
-  
-
+  const handlesearhdealers=()=>{
+    sethandlesearchdealermbl(!handlesearchdealermbl)
+    if(handlerefinembl) sethandlerefinembl(false);
+    if(handlesearchcarmbl) sethandlesearchdealermbl(false);
+    if (!handlesearchdealermbl) window.scrollTo(0, 0);
+  }
+  const handlebyrefine=()=>{
+    sethandlerefinembl(!handlerefinembl);
+    if(handlesearchcarmbl) sethandlesearchdealermbl(false);
+    if(handlesearchdealermbl) sethandlesearchdealermbl(false);
+    window.scrollTo(0, 0);
+  }
+const handlenewcar=()=>{
+sethandlesearchcarmbl(!handlesearchcarmbl);
+if(handlesearchdealermbl) sethandlesearchdealermbl(false);
+if(handlerefinembl) sethandlerefinembl(false);
+if (!handlesearchcarmbl) window.scrollTo(0, 0);
+}
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -206,8 +228,8 @@ const handlecarfilter = (data) => {
             </h1>
           </div>
         </div>
-        <div className="md:flex p-2">
-          <div className="md:w-[25%] p-4 h-[50%]  border bg-gray-300 hidden md:block">
+        <div className="md:flex p-2 ">
+          <div className="md:w-[25%]  p-4 h-[50%]  border bg-gray-300 hidden md:block">
             <div
               className="text-center bg-gray-100 p-2 font-bold cursor-pointer hover:bg-gray-50"
               onClick={showDealerForm}
@@ -295,7 +317,7 @@ const handlecarfilter = (data) => {
                     >
                       <div
                         className={`${
-                          listgridView ? "]" : "w-[50%]"
+                          listgridView ? "]" : "md:w-[50%]"
                         } h-[40%] relative`}
                       >
                         <img
@@ -362,14 +384,46 @@ const handlecarfilter = (data) => {
             </div>
           </div>
         </div>
-        <div className="md:hidden fixed top-[90%] flex justify-between w-screen px-4">
-          <div className="p-2 rounded-sm bg-white shadow-xl text-gray-900">
+       {
+        handlerefinembl && ( 
+        <div className="absolute md:hidden z-10 top-0 w-full bg-white"> 
+        <div className="flex justify-end">
+          <button className="text-red-500 text-4xl mr-4" onClick={()=>sethandlerefinembl(false)}>x</button>
+        </div>
+         <RefineBySearchForm onFilterSubmit={handleFilterSubmit} onResetSearchParams={handleResetSearchParams}  />
+        </div>
+        
+       )}
+
+       {
+         handlesearchcarmbl && ( 
+          <div className="fixed md:hidden z-10 top-0 w-full bg-white"> 
+          <div className="flex justify-end">
+            <button className="text-red-500 text-4xl mr-4" onClick={()=>sethandlesearchcarmbl(false)}>x</button>
+          </div>
+          <NewCarForm onFilterCar={handlecarfilter} initialValues={carData}/>
+          </div>
+      )}
+       {
+         handlesearchdealermbl && ( 
+          <div className="fixed md:hidden z-10 top-0 w-full bg-white"> 
+          <div className="flex justify-end">
+            <button className="text-red-500 text-4xl mr-4" onClick={()=>sethandlesearchdealermbl(false)}>x</button>
+          </div>
+          <Filterbydealer
+                onFilterDealer={searchDealerHandler}
+                className="bg-white"
+              />
+          </div>
+      )}
+        <div className="md:hidden fixed top-[90%] flex justify-between w-full px-4 border">
+          <div onClick={handlesearhdealers} className="p-2 rounded-sm bg-white shadow-xl text-gray-900">
             DEALERS
           </div>
-          <div className="p-2 rounded-sm bg-white shadow-xl text-gray-900">
+          <div onClick={handlebyrefine}  className="p-2 rounded-sm bg-white shadow-xl text-gray-900">
             REFINE
           </div>
-          <div className="p-2 rounded-sm bg-white shadow-xl text-gray-900">
+          <div onClick={handlenewcar} className="p-2 rounded-sm bg-white shadow-xl text-gray-900">
             NEW
           </div>
         </div>
