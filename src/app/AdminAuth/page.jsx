@@ -41,8 +41,8 @@ export default function Login() {
            toast.success(response?.data?.message);
            console.log(response);
            if (response?.data?.admin) {
-            const adminData = JSON.stringify(response.data.admin);
-        localStorage.setItem("adminlogin", adminData);    
+           const adminData = JSON.stringify(response.data.admin);
+           localStorage.setItem("adminlogin", adminData);    
         }
         router.push('/AdminAccess')
     } catch (error) {

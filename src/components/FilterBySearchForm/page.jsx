@@ -638,7 +638,7 @@ onResetSearchParams();
                   Reset
                 </div>
                 <div className="bg-orange-500 px-2 py-1 rounded-lg w-[43%] text-white font-bold text-center ">
-                  <button type="submit ">Submit</button>
+                  <button type="submit">Submit</button>
                 </div>
               </div>
             </form>

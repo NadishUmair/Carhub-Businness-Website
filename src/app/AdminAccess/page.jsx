@@ -7,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import AdminAddCar from '@/components/AdminAddCar/page';
 import { useRouter } from "next/navigation";
 
-
 const FileBase64 = ({ onDone }) => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -24,21 +23,37 @@ const FileBase64 = ({ onDone }) => {
     <input type="file" onChange={handleFileChange} className="p-2 border" />
   );
 };
+
 const AdminAccess = () => {
   const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [dealerlogo,setdealerlogo]=useState();
-  const [admin,setAdmin]=useState();
-  console.log(dealerlogo);
+  const [dealerlogo, setdealerlogo] = useState();
+  const [admin, setAdmin] = useState(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    if (isClient) {
+      const adminloged = localStorage.getItem("adminlogin");
+      setAdmin(adminloged);
+      if (!adminloged) {
+        router.push('/AdminAuth');
+      }
+    }
+  }, [isClient]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("adminlogin");
+    router.push('/AdminAuth');
+  };
+
   const onSubmit = async (data) => {
     const dealerData = {
       ...data,
-     dealerlogo,
+      dealerlogo,
     };
     try {
       const response = await axios.post('/api/dealer', dealerData);
-     
-      
       if (response.data.success) {
         toast.success(response.data.message);
       } else {
@@ -53,27 +68,12 @@ const AdminAccess = () => {
       }
     }
   };
-  useEffect(()=>{
-      const adminloged=localStorage.getItem("adminlogin");
-      if(!adminloged){
-        router.push('/AdminAuth')
-      }
-  },[])
-    const handleLogout=(()=>{
-      localStorage.removeItem("adminlogin");
-      const adminloged=localStorage.getItem("adminlogin");
-      if(!adminloged){
-        router.push('/AdminAuth')
-      }
-    })
-    
-   console.log(localStorage.getItem("adminlogin"))
-  
+
   return (
     <div>
-       <div className='flex justify-end mr-4 p-2'>
-        <button  onClick={handleLogout} className='text-red-500 border rounded-md hover:text-red-400 border-red-500 px-2 font-semibold text-xl'>Logout</button>
-    </div>
+      <div className='flex justify-end mr-4 p-2'>
+        <button onClick={handleLogout} className='text-red-500 border rounded-md hover:text-red-400 border-red-500 px-2 font-semibold text-xl'>Logout</button>
+      </div>
       <h1 className='text-center text-4xl mt-2 font-semibold'>
         Admin <span className='text-red-500'>Panel</span>
       </h1>
@@ -107,8 +107,7 @@ const AdminAccess = () => {
         </form>
       </div>
       <ToastContainer />
-
-      <AdminAddCar/>
+      <AdminAddCar />
     </div>
   );
 };
