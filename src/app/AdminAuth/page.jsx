@@ -7,14 +7,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import { FaEye } from "react-icons/fa";
 
-
 export default function Login() {
   const router = useRouter();
 
   const [userdata, setUserdata] = useState({
     email: "",
     password: "",
- 
   });
 
   const handlechange = (e) => {
@@ -24,8 +22,6 @@ export default function Login() {
       [name]: value
     }));
   };
-
-
 
   const handlesubmitt = async (e) => {
     e.preventDefault();
@@ -37,14 +33,16 @@ export default function Login() {
     }
 
     try {
-           const response= await axios.post("/api/adminLogin",userdata);
-           toast.success(response?.data?.message);
-           console.log(response);
-           if (response?.data?.admin) {
-           const adminData = JSON.stringify(response.data.admin);
-           localStorage.setItem("adminlogin", adminData);    
+      const response = await axios.post("/api/adminLogin", userdata);
+      toast.success(response?.data?.message);
+      console.log(response);
+      if (response?.data?.admin) {
+        const adminData = JSON.stringify(response.data.admin);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("adminlogin", adminData);    
         }
         router.push('/AdminAccess')
+      }
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
     }
