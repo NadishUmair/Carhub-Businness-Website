@@ -31,7 +31,7 @@ export default function Filterbydealer({ onFilterDealer }) {
       ) : (
         <div className='flex flex-wrap justify-center gap-4 mt-4 bg-white p-2'>
           {dealers?.map((item, index) => (
-            <div className='w-[40%] shadow-lg' key={index}>
+            <div className='w-[40%] shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300 ease-in-out group'  key={index}>
               <img
                 className='w-full h-full'
                 src={item.dealerlogo}
