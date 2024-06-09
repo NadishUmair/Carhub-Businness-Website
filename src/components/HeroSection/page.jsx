@@ -1,10 +1,10 @@
-"use client"; // Ensure this is at the very top of the file
+"use client";
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner component
+import ClipLoader from "react-spinners/ClipLoader";
 
 const HeroSection = () => {
   const router = useRouter();
@@ -54,7 +54,7 @@ const HeroSection = () => {
   const [carType, setCarType] = useState("used");
 
   const onSubmit = async (data) => {
-    setLoading(true); // Set loading to true when form is submitted
+    setLoading(true); 
     const carTypeValue = carType === "used" ? "Used Car" : "New Car";
     const carData = {
       make: data.make,
@@ -64,8 +64,13 @@ const HeroSection = () => {
       carType: carTypeValue,
     };
 
-    const query = new URLSearchParams(carData).toString();
-    console.log("Query String:", query); // Debugging output
+    
+    const filteredCarData = Object.fromEntries(
+      Object.entries(carData).filter(([_, value]) => value)
+    );
+
+    const query = new URLSearchParams(filteredCarData).toString();
+    console.log("Query String:", query); 
     router.push(`/CarList?${query}`);
   };
 
