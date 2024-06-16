@@ -67,10 +67,11 @@ const CarList = () => {
       distance: searchParams.get("distance"),
       carType: searchParams.get("carType"),
     };
+    console.log("params of the data",data);
     localStorage.setItem("savedFormData", JSON.stringify(data));
     setCarData(data);
     const anyFilterPresent = Object.values(data).some((value) => value);
-  
+    
     if (!anyFilterPresent) {
       setCars(FilterCar);
       setshowcars(FilterCar);
@@ -95,6 +96,7 @@ const CarList = () => {
       setCars([]);
       setshowcars([]);
     }
+   
   }, [searchParams, FilterCar]);
   
 
@@ -159,11 +161,11 @@ const handlecarfilter = (data) => {
 
 
   const searchDealerHandler = (dealerName) => {
-    const filteredDealers = FilterCar?.filter((item) => {
+    const filteredDealers = cars?.filter((item) => {
       return dealerName && item.dealername === dealerName;
     });
     setshowcars(filteredDealers);
-    setCars(filteredDealers);
+    // setCars(filteredDealers);
     sethandlesearchdealermbl(false);
   };
 
@@ -171,20 +173,21 @@ const handlecarfilter = (data) => {
     const value = e.target.value;
     if (value === "recentlyadded"){
       const today = new Date().toISOString().split('T')[0];
-      const filteredCars = FilterCar.filter((car) => {
+      const filteredCars = cars?.filter((car) => {
         return (car.updatedAt.split('T')[0] === today);
       });
       
-      setCars(filteredCars || []); 
+      // setCars(filteredCars || []); 
       setshowcars(filteredCars || [])
     } else {
-      const FilterSort = FilterCar.filter((car) => {
+      const FilterSort = cars?.filter((car) => {
         return value && car.cartype === value;
       });
-      setCars(FilterSort);
+      // setCars(FilterSort);
       setshowcars(FilterSort);
     }
   };
+  console.log("cars",cars)
   const handleResetSearchParams = () => {
     const queryParams = new URLSearchParams();
     queryParams.delete("make");
@@ -262,7 +265,7 @@ if (!handlesearchcarmbl) window.scrollTo(0, 0);
           <div className="md:w-[75%] p-2">
             <div className="flex justify-between ">
               <div className="text-xl">
-                Showing 1-{cars?.length} of{" "}
+                Showing 1-{showcars?.length} of
                 <span className="text-red-500">{FilterCar?.length} </span>{" "}
                 results
               </div>

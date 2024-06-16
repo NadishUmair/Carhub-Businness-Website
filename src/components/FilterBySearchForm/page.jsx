@@ -47,7 +47,7 @@ export default function RefineBySearchForm({ onFilterSubmit,onResetSearchParams 
 
     findCars();
   }, []);
-
+  console.log("initial values check",initialValues);
   useEffect(() => {
     if (forForm.length > 0) {
       const makes = [...new Set(forForm.map((car) => car.make))];
@@ -124,6 +124,8 @@ export default function RefineBySearchForm({ onFilterSubmit,onResetSearchParams 
       setValue("model", initialValues?.model || "");
     }
   }, [watchMake, modelsByMake, setValue, initialValues]);
+ 
+  console.log(initialValues.make);
 
   return (
     <div>
@@ -145,13 +147,13 @@ export default function RefineBySearchForm({ onFilterSubmit,onResetSearchParams 
                   {...register("make")}
                   className="border p-2"
                   onChange={handleMakeChange}
-                  defaultValue={initialValues?.make || ""}
+                  value={selectedMake}
                  
                 >
-                  <option value="" >
+                  <option value="" defaultValue>
                     Select
                   </option>
-                  {uniqueMakes.map((make) => (
+                  {uniqueMakes?.map((make) => (
                     <option key={make} value={make}>
                       {make}
                     </option>
@@ -166,12 +168,12 @@ export default function RefineBySearchForm({ onFilterSubmit,onResetSearchParams 
                 <select
                   type="text"
                   name="model"
-                  id=""
+                  id="model"
                   {...register("model")}
                   className="border p-2"
-                  defaultValue={initialValues?.model || ""}
+                  // defaultValue={initialValues?.model}
                 >
-                  <option value="">
+                  <option value="" defaultValue>
                     Select
                   </option>
                   {modelsByMake[selectedMake]?.map((model) => (
