@@ -290,8 +290,8 @@ if (!handlesearchcarmbl) window.scrollTo(0, 0);
                 </form>
               </div>
             </div>
-            <div className="flex justify-end p-4 ">
-              <div className="flex ">
+            <div className="flex justify-end  mt-4">
+              <div className="hidden md:flex ">
                 <span className="mr-2 text-xl">
                   <BsGrid3X3Gap onClick={() => setlistgridView(true)} />{" "}
                 </span>
@@ -301,7 +301,7 @@ if (!handlesearchcarmbl) window.scrollTo(0, 0);
               </div>
             </div>
             <div
-              className={`${listgridView ? "flex flex-wrap  gap-4 " : "p-2"}`}
+              className={`${listgridView ? "flex flex-wrap  gap-4 h-full mt-4" : "p-2"}`}
             >
               {showcars?.map((item, index) => {
                 return (
@@ -320,8 +320,8 @@ if (!handlesearchcarmbl) window.scrollTo(0, 0);
                     >
                       <div
                         className={`${
-                          listgridView ? "]" : "md:w-[50%]"
-                        } h-[40%] relative`}
+                          listgridView ? "" : "md:w-[40%]"
+                        } h-[50%] relative`}
                       >
                         <img
                           className="h-full w-full"
@@ -340,7 +340,7 @@ if (!handlesearchcarmbl) window.scrollTo(0, 0);
                             {item.title}
                           </div>
                           <div>
-                            <div className="flex text-yellow-400 text-xl">
+                            <div className="flex text-yellow-400 text-xl mt-2">
                               <TiStar />
                               <TiStar />
                               <TiStar />
@@ -349,36 +349,60 @@ if (!handlesearchcarmbl) window.scrollTo(0, 0);
                               <p className="text-black text-sm">(5 Reviews)</p>
                             </div>
                           </div>
-                          <p className="text-gray-700 text-base">
+                          <p className="text-gray-700 text-base mt-2">
                             {item.description}
                           </p>
                         </div>
-                        <div className="px-2 pt-4 pb-1">
-                          <div className="flex">
-                            <span className=" rounded-full px-3 py-1 text-[0.8rem] mr-2 mb-2">
-                              <span className="font-bold"></span> {item.millage}
-                            </span>
-                            <span className=" rounded-full px-3 py-1  text-[0.8rem] mr-2 mb-2">
-                              <span className="font-bold"></span>{" "}
-                              {item.location}
-                            </span>
-                            <span className=" rounded-full px-3 py-1   text-[0.8rem] mr-2 mb-2">
-                              <span className="font-bold"></span>
-                              {
+                        <div className="px-2 pt-4 ">
+                          <div className="flex ">
+                            <div className=" rounded-full  px-3  text-[1rem] mr-2 mb-2">
+                              <span className="font-bold text-blue-500 mr-1">Doors:</span>
+                              <span>{item.doors}</span>
+                            </div>
+                            <div className="rounded-full px-3  text-[1rem] mr-2 mb-2">
+                              <span className="font-bold text-blue-500 mr-1">Location:</span>{" "}
+                             <span> {item.location}</span>
+                            </div>
+                            <div className="rounded-full px-3   text-[1rem] mr-2 mb-2">
+                              <span className="font-bold text-blue-500 mr-1">  Posted:</span>
+                           <span> {
                                 new Date(item.createdAt)
                                   .toISOString()
                                   .split("T")[0]
-                              }
-                            </span>
+                              }</span>
+                            </div>
                           </div>
-                          <div className="flex justify-between">
+                          
+                        </div>
+                        <div className="px-2  ">
+                          <div className="flex ">
+                            <div className=" rounded-full flex flex-col px-3  text-[1rem] mr-2 mb-2">
+                              <span className="font-bold text-blue-500 mr-1">Millage:</span>
+                              <span>{item.millage}</span>
+                            </div>
+                            <div className="flex flex-col rounded-full px-3   text-[1rem] mr-2 mb-2">
+                              <span className="font-bold text-blue-500 mr-1">CarType:</span>{" "}
+                             <span> {item.cartype}</span>
+                            </div>
+                            <div className="flex flex-col rounded-full px-3   text-[1rem] mr-2 mb-2">
+                              <span className="font-bold text-blue-500 mr-1">  Posted:</span>
+                           <span> {
+                                new Date(item.createdAt)
+                                  .toISOString()
+                                  .split("T")[0]
+                              }</span>
+                            </div>
+                          </div>
+                          
+                        </div>
+                        
+                        <div className="flex justify-between">
                             <span className="inline-block rounded-full px-3 py-1 text-sm font-bold mr-2 mb-2">
                               <span className="font-bold">$</span>
                               {item.price}
                             </span>
-                            <span className="text-red-500">Share</span>
+                            <span className="text-red-500 font-semibold">Share</span>
                           </div>
-                        </div>
                       </div>
                     </div>
                   </div>
